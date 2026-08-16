@@ -1,0 +1,3 @@
+This folder contains the frontend source code for the SH18 application.
+Use this directory for UI components, screens, and client-side logic.
+Frontend features must respect the financial rules in ../DOCS/FINACIAL-RULES.md.
