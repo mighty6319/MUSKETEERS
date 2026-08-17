@@ -1,3 +1,5 @@
 # Financial Rules
 
-- write rules
+```bash
+- write the rules
+```
