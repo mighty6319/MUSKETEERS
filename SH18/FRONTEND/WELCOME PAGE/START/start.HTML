@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="KNOW'E LEDGER - Learn money by living it.">
+    <meta name="author" content="MUSKETEERS">
+    <meta name="theme-color" content="#2D006B">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script src="script.js" defer></script>
+
+    <title>KNOW'E LEDGER | Start</title>
+</head>
+
+<body>
+
+    <header >
+        <h1>
+            <span class="n1">KNOW'E LEDGER</span>
+        </h1>
+
+        <p>Know.Experience.Decide</p>
+    </header>
+
+    <button type="start" id="start">
+        START
+    </button>
+
+    <audio id="bgMusic" loop>
+        <source src="../../MUSIC/monume-modern-futuristic-547952.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="muteBtn" type="button">
+        🔊
+    </button>
+
+
+    <main id="login" hidden>
+        <div class="side">
+            <div class="bg"></div>
+            <div>
+                <h3>WHAT YOU WILL GET</h3>
+            </div>
+            <div class="point1">
+                <button id="icon1">🎯</button>
+                <p><span>Real Life Simulation</span></p>
+                <p>Experience real life Financial scenario.</p>
+            </div>
+            <div class="point2">
+                <button id="icon2">📊</button>
+                <p><span>Smart Decisions</span></p>
+                <p>Make choices that shape your future.</p>
+            </div>
+            <div class="point3">
+                <button id="icon3">🏆</button>
+                <p><span>Achieve Goals</span></p>
+                <p>Set goals and achieve milestones.</p>
+            </div>
+            <div class="point4">
+                <button id="icon4">🪪</button>
+                <p><span>Learn & Grow</span></p>
+                <p>Master money skills while having fun.</p>
+            </div>
+        </div>
+
+        <section class="login-form" aria-label="Player login">
+            <input id="username" name="username" type="text" placeholder="Username" autocomplete="username">
+            <button class="play-button" type="button" onclick="window.location.href='../MAIN/main.html'">PLAY</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MUSKETEERS</p>
+    </footer>
+
+    
+</body>
+</html>

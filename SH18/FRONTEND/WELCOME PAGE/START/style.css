@@ -1,0 +1,581 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700;900&display=swap');
+
+
+/* =========================
+   GLOBAL RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+body {
+    min-height: 100vh;
+
+    background-image: url("../../assets/bg1.jpeg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    position: absolute;
+
+    top: 34%;
+    left: 80%;
+
+    width: min(92vw, 900px);
+
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+}
+
+
+/* =========================
+   MAIN HEADING
+========================= */
+
+header h1 {
+    position: relative;
+
+    display: block;
+
+    margin: 0 0 24px;
+
+    color: #fefefe;
+
+    white-space: nowrap;
+
+    animation: headingIn 2s ease-out forwards;
+}
+
+
+header h1 .n1 {
+    display: inline-block;
+
+    font-family: 'Dosis', sans-serif;
+
+    font-weight: 900;
+
+    word-spacing: 1px;
+
+    font-size: clamp(58px, 5.7vw, 88px);
+
+    transform: scaleY(1.5);
+
+    background: linear-gradient(
+        180deg,
+        #fefefe22,
+        #fefefe5a,
+        #fefefe
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================
+   SUBTITLE
+========================= */
+
+header p {
+    margin: 0;
+
+    color: #fefefe;
+
+    font-family: 'Courier New', Courier, monospace;
+
+    font-size: clamp(18px, 2vw, 30px);
+}
+
+
+
+
+
+/* =========================
+   START BUTTON
+========================= */
+
+button[type="start"] {
+
+    position: absolute;
+
+    top: 470px;
+    left: 81%;
+
+    transform: translateX(-50%);
+
+    cursor: pointer;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    border-radius: 20px 12px 20px 12px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    font-size: clamp(24px, 2.4vw, 36px);
+
+    padding: 30px 130px;
+
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.25)
+    );
+
+    color: white;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.692);
+
+    transition: 0.3s ease;
+}
+
+
+button[type="start"]:hover {
+
+    transform:
+        translateX(-50%)
+        translateY(-5px);
+
+    box-shadow:
+        0 8px 25px rgba(255, 255, 255, 0.25),
+        0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================
+   LOADING CURSOR
+========================= */
+
+body.loading {
+    cursor: progress;
+}
+
+
+/* =========================
+   MUTE BUTTON
+========================= */
+
+#muteBtn {
+
+    position: fixed;
+
+    top: 20px;
+    right: 20px;
+
+    width: 52px;
+    height: 52px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.009),
+        rgba(65, 64, 64, 0.215)
+    );
+
+    color: white;
+
+    border-radius: 12px;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.299);
+
+    transition: 0.3s ease;
+
+    font-size: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#muteBtn:hover {
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    transform: scale(1.08);
+
+    box-shadow:
+        0 6px 20px rgba(255, 255, 255, 0.15);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+    position: fixed;
+
+    top: 13px;
+    left: 15px;
+
+    color: darkgray;
+}
+
+
+/* =========================
+   SMALL SCREENS
+========================= */
+
+@media (max-width: 600px) {
+
+    header {
+        width: 95vw;
+    }
+
+    header h1 .n1 {
+        font-size: 58px;
+    }
+
+    header p {
+        font-size: 18px;
+    }
+
+    button[type="start"] {
+
+        top: 470px;
+
+        padding:
+            22px 60px;
+
+        font-size: 26px;
+    }
+}
+/* =========================
+   LOGIN SCREEN
+========================= */
+
+#login{
+    position:relative;
+    width: 80%;
+    height: 725px;
+
+    margin: 12% auto;
+
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px;
+
+    background: rgb(255, 255, 255);
+
+    overflow: hidden;
+    display:flex;
+    color:#fefefe;
+    isolation: isolate;
+}
+
+#login::before,
+#login::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border: 2px solid rgba(39, 1, 91, 0.24);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+#login::before {
+    width: 360px;
+    height: 360px;
+    right: 7%;
+    top: 12%;
+    box-shadow: 0 0 28px rgba(80, 1, 120, 0.22);
+    animation: gameOrbit 6s linear infinite;
+}
+
+#login::after {
+    width: 180px;
+    height: 180px;
+    right: 21%;
+    top: 27%;
+    border-color: rgba(80, 1, 120, 0.3);
+    box-shadow: 0 0 22px rgba(80, 1, 120, 0.18);
+    animation: gamePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes gameOrbit {
+    from {
+        transform: rotate(0deg) translateX(26px) rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg) translateX(26px) rotate(-360deg);
+    }
+}
+
+@keyframes gamePulse {
+    0%,
+    100% {
+        transform: scale(0.86);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.14);
+        opacity: 1;
+    }
+}
+
+/*------------------side--------------------*/
+
+
+#login .side {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,#27015b, #100139, #1b0040 );
+    width: 600px;
+    height: auto;
+    border-radius:20px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.961),
+        inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+}
+
+
+
+
+
+#login h3{
+    font-family: 'Dosis', sans-serif;
+    font-size: clamp(24px, 3vh, 32px);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+    position: relative;
+    width: 90%;
+    text-align: center;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.94);
+    padding: 22px 10px;
+    left: auto;
+    bottom: auto;
+    margin: 0 auto 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#icon1,
+#icon2,
+#icon3,
+#icon4 {
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 18px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.28),
+        rgba(255, 255, 255, 0.08)
+    );
+    color: #ffffff;
+    font-size: 30px;
+    line-height: 1;
+    cursor: default;
+    pointer-events: none;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.45),
+        0 8px 22px rgba(0, 0, 0, 0.28);
+}
+
+#login .point1,
+#login .point2,
+#login .point3,
+#login .point4 {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    column-gap: 18px;
+    row-gap: 6px;
+    align-items: center;
+    width: 90%;
+    flex: 1 1 0;
+    min-height: 0;
+    margin: 8px auto;
+    padding: 18px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.16);
+}
+
+#login .point1 button,
+#login .point2 button,
+#login .point3 button,
+#login .point4 button {
+    grid-row: 1 / span 2;
+}
+
+#login .point1 p,
+#login .point2 p,
+#login .point3 p,
+#login .point4 p {
+    margin: 0;
+    text-align: left;
+}
+
+#login .point1 span,
+#login .point2 span,
+#login .point3 span,
+#login .point4 span {
+    display: block;
+    color: #ffffff;
+    font-family: 'Dosis', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+#login .point1 p:last-child,
+#login .point2 p:last-child,
+#login .point3 p:last-child,
+#login .point4 p:last-child {
+    color: rgba(255, 255, 255, 0.78);
+    font-family: 'Dosis', sans-serif;
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.login-form {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 600px);
+    min-height: 100%;
+    margin-left: 600px;
+    padding: 48px;
+}
+
+#username {
+    width: min(90%, 420px);
+    padding: 22px 24px;
+    border: 2px solid rgba(39, 1, 91, 0.2);
+    border-radius: 16px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.72);
+    color: #27015b;
+    font-family: 'Dosis', sans-serif;
+    font-size: clamp(26px, 3vw, 42px);
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(39, 1, 91, 0.12);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+#username::placeholder {
+    color: rgba(39, 1, 91, 0.48);
+}
+
+#username:focus {
+    border-color: rgba(80, 1, 120, 0.65);
+    box-shadow: 0 0 0 5px rgba(80, 1, 120, 0.1), 0 12px 30px rgba(39, 1, 91, 0.16);
+}
+
+.play-button {
+    margin-top: 24px;
+    padding: 16px 64px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #27015b, #500178);
+    color: #ffffff;
+    font-family: 'Dosis', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(39, 1, 91, 0.24);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.play-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(39, 1, 91, 0.32);
+}
+
+@media (max-width: 900px) {
+    #login {
+        width: 94%;
+        height: auto;
+        min-height: 90vh;
+        flex-direction: column;
+    }
+
+    #login .side {
+        position: relative;
+        top: auto;
+        width: 100%;
+        height: auto;
+        min-height: 680px;
+    }
+
+    .login-form {
+        width: 100%;
+        min-height: 360px;
+        margin-left: 0;
+    }
+}
+
