@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
+    <script src="validation.js" defer></script>
     <script src="script.js" defer></script>
 
     <title>KNOW'E LEDGER | Start</title>
@@ -90,7 +91,7 @@
     </button>
 
     <audio id="bgMusic" loop>
-        <source src="../../MUSIC/monume-modern-futuristic-547952.mp" type="audio/mpeg">
+        <source src="../../MUSIC/monume-modern-futuristic-547952.mp3" type="audio/mpeg">
     </audio>
 
     <button id="muteBtn" type="button">
@@ -101,9 +102,100 @@
     <main id="login" hidden>
 
         <section class="login-form" aria-label="Player login">
-            <input id="username" name="username" type="text" placeholder="Username" autocomplete="username">
-            <button class="play-button" type="button" id="playButton">PLAY</button>
+            <div id="loginForm">
+                <input id="username" name="username" type="text" placeholder="Username" autocomplete="username">
+                <button class="play-button" type="button" id="playButton">PLAY</button>
+            </div>
+
+            <section id="createProfile" hidden aria-live="polite">
+                <h2>CREATE PROFILE</h2>
+                <p id="profileMessage">Complete your profile to continue.</p>
+                <button class="play-button" type="button" id="createProfileButton">CREATE PROFILE</button>
+            </section>
         </section>
+    </main>
+
+    <main id="profileBlock" hidden>
+        <aside class="profile-intro">
+            <button id="backToLogin" class="back-to-login" type="button" aria-label="Back to username" title="Back to username">←</button>
+            <span class="profile-kicker">KNOW'E LEDGER</span>
+            <h2>BUILD YOUR<br>PLAYER PROFILE</h2>
+            <p>Shape your financial journey with choices that feel like you.</p>
+        </aside>
+
+        <form id="profileForm" class="profile-form">
+            <div class="profile-heading">
+                <div>
+                    <span class="profile-kicker">PLAYER SETUP</span>
+                    <h2>Tell us about you</h2>
+                </div>
+                <span id="profileStatus" class="profile-status">IN PROGRESS</span>
+            </div>
+
+            <div class="profile-grid">
+                <label class="profile-field username-field">
+                    <span>Username</span>
+                    <div class="editable-username">
+                        <input id="profileUsername" name="profileUsername" type="text" readonly>
+                        <button id="editUsername" type="button" aria-label="Edit username" title="Edit username">✎</button>
+                    </div>
+                </label>
+
+                <label class="profile-field">
+                    <span>Age</span>
+                    <select id="age" name="age" required>
+                        <option value="" selected disabled>Select age</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                    </select>
+                </label>
+
+                <label class="profile-field">
+                    <span>Income preference</span>
+                    <select id="income" name="income" required>
+                        <option value="" selected disabled>Select preference</option>
+                        <option value="less">Less</option>
+                        <option value="average">Average</option>
+                        <option value="high">High</option>
+                    </select>
+                </label>
+
+                <fieldset class="profile-field choice-field">
+                    <legend>Gender</legend>
+                    <div class="choice-row">
+                        <label><input type="radio" name="gender" value="male" required><span>♂️ Male</span></label>
+                        <label><input type="radio" name="gender" value="female"><span>♀️ Female</span></label>
+                    </div>
+                </fieldset>
+
+                <fieldset class="profile-field choice-field">
+                    <legend>Nature</legend>
+                    <div class="choice-row">
+                        <label><input type="checkbox" name="nature" value="spendy"><span>💸 Spendy</span></label>
+                        <label><input type="checkbox" name="nature" value="saver"><span>💰 Saver</span></label>
+                        <label><input type="checkbox" name="nature" value="neutral"><span>⚖️ Neutral</span></label>
+                    </div>
+                </fieldset>
+
+                <fieldset class="profile-field choice-field expense-field">
+                    <legend>Spending preference</legend>
+                    <div class="expense-row">
+                        <button type="button" class="expense-choice" data-expense="expensive">Expensive</button>
+                        <button type="button" class="expense-choice" data-expense="less-expensive">Less expensive</button>
+                    </div>
+                </fieldset>
+            </div>
+
+            <p id="profileError" class="profile-error" role="alert" hidden></p>
+
+            <div class="profile-actions">
+                <button id="resetProfile" class="secondary-action" type="reset">RESET</button>
+                <button class="primary-action" type="submit">CREATE</button>
+            </div>
+        </form>
     </main>
 
     <footer>
