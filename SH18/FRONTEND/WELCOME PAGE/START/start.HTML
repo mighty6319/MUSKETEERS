@@ -24,6 +24,7 @@
         <source src="../../assets/start.mp4" type="video/mp4">
     </video>
     <header>
+        <div class="start-content">
         <div class="character">
             <div class="character-head"></div>
             <div class="body-message">Hover over here!</div>
@@ -41,7 +42,6 @@
             </div>
         </div>
         </div>
-
         <h1>
             <span class="n1">KNOW'E LEDGER</span>
         </h1>
@@ -49,12 +49,48 @@
         <p>Know.Experience.Decide</p>
     </header>
 
-    <button type="start" id="start">
+    <aside class="side" aria-label="What you will get">
+        <h3>WHAT YOU WILL GET</h3>
+
+        <div class="point1">
+            <button id="icon1" aria-hidden="true">🎯</button>
+            <div>
+                <p><span>Real Life Simulation</span></p>
+                <p>Experience real life Financial scenario.</p>
+            </div>
+        </div>
+
+        <div class="point2">
+            <button id="icon2" aria-hidden="true">📊</button>
+            <div>
+                <p><span>Smart Decisions</span></p>
+                <p>Make choices that shape your future.</p>
+            </div>
+        </div>
+
+        <div class="point3">
+            <button id="icon3" aria-hidden="true">🏆</button>
+            <div>
+                <p><span>Achieve Goals</span></p>
+                <p>Set goals and achieve milestones.</p>
+            </div>
+        </div>
+
+        <div class="point4">
+            <button id="icon4" aria-hidden="true">🪪</button>
+            <div>
+                <p><span>Learn & Grow</span></p>
+                <p>Master money skills while having fun.</p>
+            </div>
+        </div>
+    </aside>
+
+    <button type="button" id="start">
         START
     </button>
 
     <audio id="bgMusic" loop>
-        <source src="../../MUSIC/monume-modern-futuristic-547952.mp3" type="audio/mpeg">
+        <source src="../../MUSIC/monume-modern-futuristic-547952.mp" type="audio/mpeg">
     </audio>
 
     <button id="muteBtn" type="button">
@@ -63,36 +99,10 @@
 
 
     <main id="login" hidden>
-        <div class="side">
-            <div class="bg"></div>
-            <div>
-                <h3>WHAT YOU WILL GET</h3>
-            </div>
-            <div class="point1">
-                <button id="icon1">🎯</button>
-                <p><span>Real Life Simulation</span></p>
-                <p>Experience real life Financial scenario.</p>
-            </div>
-            <div class="point2">
-                <button id="icon2">📊</button>
-                <p><span>Smart Decisions</span></p>
-                <p>Make choices that shape your future.</p>
-            </div>
-            <div class="point3">
-                <button id="icon3">🏆</button>
-                <p><span>Achieve Goals</span></p>
-                <p>Set goals and achieve milestones.</p>
-            </div>
-            <div class="point4">
-                <button id="icon4">🪪</button>
-                <p><span>Learn & Grow</span></p>
-                <p>Master money skills while having fun.</p>
-            </div>
-        </div>
 
         <section class="login-form" aria-label="Player login">
             <input id="username" name="username" type="text" placeholder="Username" autocomplete="username">
-            <button class="play-buttotype=" button" id="playButton">PLAY</button>
+            <button class="play-button" type="button" id="playButton">PLAY</button>
         </section>
     </main>
 

@@ -25,8 +25,8 @@ muteBtn.addEventListener("click", (event) => {
 
 const login = document.querySelector("#login");
 const header = document.querySelector("header");
-const startButton = document.querySelector('button[type="start"]');
-
+const startButton = document.querySelector('#start');
+const side=document.querySelector(".side");
 const playButton = document.querySelector("#playButton");
 const usernameInput = document.querySelector("#username");
 
@@ -39,6 +39,7 @@ startButton.addEventListener("click", (event) => {
 
     startButton.hidden = true;
     header.hidden = true;
+    side.hidden=true;
     login.hidden = false;
 
 });
