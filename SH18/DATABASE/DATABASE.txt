@@ -1,3 +1,0 @@
-This folder contains the database source code and data models for SH18.
-Use this directory for schemas, migrations, and database-related logic.
-All financial data must follow the rules defined in ../DOCS/FINACIAL-RULES.md.

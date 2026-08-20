@@ -1,0 +1,244 @@
+{
+    "profiles": [
+        {
+            "profile_id": 1,
+            "gender": "BOY 1",
+            "income_level": "LOW",
+            "city_level": "EXPENSIVE",
+            "budget": {
+                "HOUSING": 28.0,
+                "FOOD": 17.0,
+                "UTILITIES & CONNECTIVITY": 12.0,
+                "TRANSPORT": 8.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 4.0,
+                "LOANs & EMIs": 6.0,
+                "EDUCATION & CAREER": 4.0,
+                "SAVINGS & INVESTMENT": 7.0
+            }
+        },
+        {
+            "profile_id": 2,
+            "gender": "BOY 2",
+            "income_level": "LOW",
+            "city_level": "LESS EXPENSIVE",
+            "budget": {
+                "HOUSING": 20.0,
+                "FOOD": 17.0,
+                "UTILITIES & CONNECTIVITY": 11.0,
+                "TRANSPORT": 8.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 7.0,
+                "EDUCATION & CAREER": 4.0,
+                "SAVINGS & INVESTMENT": 14.0
+            }
+        },
+        {
+            "profile_id": 3,
+            "gender": "BOY 3",
+            "income_level": "AVERAGE",
+            "city_level": "EXPENSIVE",
+            "budget": {
+                "HOUSING": 27.0,
+                "FOOD": 15.0,
+                "UTILITIES & CONNECTIVITY": 10.0,
+                "TRANSPORT": 7.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 4.0,
+                "LOANs & EMIs": 6.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 12.0
+            }
+        },
+        {
+            "profile_id": 4,
+            "gender": "BOY 4",
+            "income_level": "AVERAGE",
+            "city_level": "LESS EXPENSIVE",
+            "budget": {
+                "HOUSING": 19.0,
+                "FOOD": 15.0,
+                "UTILITIES & CONNECTIVITY": 10.0,
+                "TRANSPORT": 7.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 6.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 19.0
+            }
+        },
+        {
+            "profile_id": 5,
+            "gender": "BOY 5",
+            "income_level": "HIGH",
+            "city_level": "EXPENSIVE",
+            "budget": {
+                "HOUSING": 24.0,
+                "FOOD": 13.0,
+                "UTILITIES & CONNECTIVITY": 9.0,
+                "TRANSPORT": 6.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 4.0,
+                "FAMILY & SOCIAL": 5.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 7.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 15.0
+            }
+        },
+        {
+            "profile_id": 6,
+            "gender": "BOY 6",
+            "income_level": "HIGH",
+            "city_level": "LESS EXPENSIVE",
+            "budget": {
+                "HOUSING": 17.0,
+                "FOOD": 13.0,
+                "UTILITIES & CONNECTIVITY": 9.0,
+                "TRANSPORT": 6.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 4.0,
+                "FAMILY & SOCIAL": 5.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 7.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 22.0
+            }
+        },
+        {
+            "profile_id": 7,
+            "gender": "GIRL 1",
+            "income_level": "LOW",
+            "city_level": "EXPENSIVE",
+            "budget": {
+                "HOUSING": 29.0,
+                "FOOD": 16.0,
+                "UTILITIES & CONNECTIVITY": 11.0,
+                "TRANSPORT": 9.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 4.0,
+                "LOANs & EMIs": 6.0,
+                "EDUCATION & CAREER": 4.0,
+                "SAVINGS & INVESTMENT": 7.0
+            }
+        },
+        {
+            "profile_id": 8,
+            "gender": "GIRL 2",
+            "income_level": "LOW",
+            "city_level": "LESS EXPENSIVE",
+            "budget": {
+                "HOUSING": 21.0,
+                "FOOD": 16.0,
+                "UTILITIES & CONNECTIVITY": 10.0,
+                "TRANSPORT": 9.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 7.0,
+                "EDUCATION & CAREER": 4.0,
+                "SAVINGS & INVESTMENT": 14.0
+            }
+        },
+        {
+            "profile_id": 9,
+            "gender": "GIRL 3",
+            "income_level": "AVERAGE",
+            "city_level": "EXPENSIVE",
+            "budget": {
+                "HOUSING": 28.0,
+                "FOOD": 14.0,
+                "UTILITIES & CONNECTIVITY": 9.0,
+                "TRANSPORT": 8.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 4.0,
+                "LOANs & EMIs": 6.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 12.0
+            }
+        },
+        {
+            "profile_id": 10,
+            "gender": "GIRL 4",
+            "income_level": "AVERAGE",
+            "city_level": "LESS EXPENSIVE",
+            "budget": {
+                "HOUSING": 20.0,
+                "FOOD": 14.0,
+                "UTILITIES & CONNECTIVITY": 9.0,
+                "TRANSPORT": 8.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 3.0,
+                "FAMILY & SOCIAL": 4.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 6.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 19.0
+            }
+        },
+        {
+            "profile_id": 11,
+            "gender": "GIRL 5",
+            "income_level": "HIGH",
+            "city_level": "EXPENSIVE",
+            "budget": {
+                "HOUSING": 25.0,
+                "FOOD": 12.0,
+                "UTILITIES & CONNECTIVITY": 8.0,
+                "TRANSPORT": 7.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 4.0,
+                "FAMILY & SOCIAL": 5.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 7.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 15.0
+            }
+        },
+        {
+            "profile_id": 12,
+            "gender": "GIRL 6",
+            "income_level": "HIGH",
+            "city_level": "LESS EXPENSIVE",
+            "budget": {
+                "HOUSING": 18.0,
+                "FOOD": 12.0,
+                "UTILITIES & CONNECTIVITY": 8.0,
+                "TRANSPORT": 7.0,
+                "HEALTHCARE": 5.0,
+                "PERSONAL CARE": 2.0,
+                "CLOTHING": 4.0,
+                "FAMILY & SOCIAL": 5.0,
+                "LIFESTYLE & ENTERTAINMENT": 5.0,
+                "LOANs & EMIs": 7.0,
+                "EDUCATION & CAREER": 5.0,
+                "SAVINGS & INVESTMENT": 22.0
+            }
+        }
+    ]
+}

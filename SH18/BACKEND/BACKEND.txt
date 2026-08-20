@@ -1,3 +1,0 @@
-This folder contains the backend source code for the SH18 project.
-Use this directory for APIs, business logic, and server-side services.
-Follow the financial rules in ../DOCS/FINACIAL-RULES.md for all financial processing.
