@@ -1,5 +1,6 @@
+// ================= MUSIC =================
+
 const music = document.querySelector("#bgMusic");
-        
 const muteBtn = document.querySelector("#muteBtn");
 
 music.volume = 0.1;
@@ -7,6 +8,7 @@ music.volume = 0.1;
 music.play();
 
 muteBtn.addEventListener("click", (event) => {
+
     event.stopPropagation();
 
     if (music.paused) {
@@ -17,28 +19,68 @@ muteBtn.addEventListener("click", (event) => {
         muteBtn.textContent = "▶️";
     }
 });
-const logintab=document.querySelector("#login");
-const headertab=document.querySelector("header");
-const startbtn=document.querySelector(`button[type="start"]`);
-startbtn.addEventListener("click",(event)=>{
+
+
+// ================= LOGIN =================
+
+const login = document.querySelector("#login");
+const header = document.querySelector("header");
+const startButton = document.querySelector('button[type="start"]');
+
+const playButton = document.querySelector("#playButton");
+const usernameInput = document.querySelector("#username");
+
+
+// START BUTTON
+
+startButton.addEventListener("click", (event) => {
+
     event.stopPropagation();
-    startbtn.hidden=true;
-    headertab.hidden=true;
-    logintab.hidden=false;
-})
+
+    startButton.hidden = true;
+    header.hidden = true;
+    login.hidden = false;
+
+});
+
+
+// CLOSE LOGIN WHEN CLICKING OUTSIDE
 
 document.addEventListener("click", (event) => {
 
-    // Login is currently visible
-    if (!logintab.hidden) {
+    if (!login.hidden && !event.target.closest("#login")) {
 
-        // Click was outside login
-        if (!event.target.closest("#login")) {
+        login.hidden = true;
+        startButton.hidden = false;
+        header.hidden = false;
 
-            logintab.hidden = true;
-            startbtn.hidden = false;
-            headertab.hidden = false;
-        }
     }
 
+});
+
+
+// ================= PLAY =================
+
+playButton.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
+    const username = usernameInput.value.trim();
+
+    if (username === "") {
+        alert("Please enter your username.");
+        return;
+    }
+
+    console.log("Username entered:", username);
+
+    localStorage.setItem("username", username);
+
+    console.log(
+        "Username stored:",
+        localStorage.getItem("username")
+    );
+    console.log("JS FILE LOADED");
+
+    window.location.href = "../MAIN/main.html";
 });
