@@ -9,6 +9,7 @@
     <meta name="author" content="MUSKETEERS">
     <meta name="theme-color" content="#2D006B">
 
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="style.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -104,11 +105,12 @@
         <section class="login-form" aria-label="Player login">
             <div id="loginForm">
                 <input id="username" name="username" type="text" placeholder="Username" autocomplete="username">
+                <input id="userId" name="userId" type="text" placeholder="User ID for verification" autocomplete="off" hidden>
                 <button class="play-button" type="button" id="playButton">PLAY</button>
             </div>
 
             <section id="createProfile" hidden aria-live="polite">
-                <h2>CREATE PROFILE</h2>
+                <h2>NEW USER</h2>
                 <p id="profileMessage">Complete your profile to continue.</p>
                 <button class="play-button" type="button" id="createProfileButton">CREATE PROFILE</button>
             </section>
@@ -190,6 +192,13 @@
             </div>
 
             <p id="profileError" class="profile-error" role="alert" hidden></p>
+
+            <div class="salary-container">
+                <label class="salary-field" for="salary">
+                    <span>Your monthly salary</span>
+                    <input id="salary" name="salary" type="number" min="10000" max="200000" step="1" placeholder="Enter salary in INR" disabled>
+                </label>
+            </div>
 
             <div class="profile-actions">
                 <button id="resetProfile" class="secondary-action" type="reset">RESET</button>

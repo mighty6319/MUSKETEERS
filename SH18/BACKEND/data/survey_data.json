@@ -2,7 +2,7 @@
     "profiles": [
         {
             "profile_id": 1,
-            "gender": "BOY",
+            "gender": "MALE",
             "income_level": "LOW",
             "city_level": "EXPENSIVE",
             "budget": {
@@ -22,7 +22,7 @@
         },
         {
             "profile_id": 2,
-            "gender": "BOY",
+            "gender": "MALE",
             "income_level": "LOW",
             "city_level": "LESS EXPENSIVE",
             "budget": {
@@ -42,7 +42,7 @@
         },
         {
             "profile_id": 3,
-            "gender": "BOY",
+            "gender": "MALE",
             "income_level": "AVERAGE",
             "city_level": "EXPENSIVE",
             "budget": {
@@ -62,7 +62,7 @@
         },
         {
             "profile_id": 4,
-            "gender": "BOY",
+            "gender": "MALE",
             "income_level": "AVERAGE",
             "city_level": "LESS EXPENSIVE",
             "budget": {
@@ -82,7 +82,7 @@
         },
         {
             "profile_id": 5,
-            "gender": "BOY",
+            "gender": "MALE",
             "income_level": "HIGH",
             "city_level": "EXPENSIVE",
             "budget": {
@@ -102,7 +102,7 @@
         },
         {
             "profile_id": 6,
-            "gender": "BOY",
+            "gender": "MALE",
             "income_level": "HIGH",
             "city_level": "LESS EXPENSIVE",
             "budget": {
@@ -122,7 +122,7 @@
         },
         {
             "profile_id": 7,
-            "gender": "GIRL",
+            "gender": "FEMALE",
             "income_level": "LOW",
             "city_level": "EXPENSIVE",
             "budget": {
@@ -142,7 +142,7 @@
         },
         {
             "profile_id": 8,
-            "gender": "GIRL",
+            "gender": "FEMALE",
             "income_level": "LOW",
             "city_level": "LESS EXPENSIVE",
             "budget": {
@@ -162,7 +162,7 @@
         },
         {
             "profile_id": 9,
-            "gender": "GIRL",
+            "gender": "FEMALE",
             "income_level": "AVERAGE",
             "city_level": "EXPENSIVE",
             "budget": {
@@ -182,7 +182,7 @@
         },
         {
             "profile_id": 10,
-            "gender": "GIRL",
+            "gender": "FEMALE",
             "income_level": "AVERAGE",
             "city_level": "LESS EXPENSIVE",
             "budget": {
@@ -202,7 +202,7 @@
         },
         {
             "profile_id": 11,
-            "gender": "GIRL",
+            "gender": "FEMALE",
             "income_level": "HIGH",
             "city_level": "EXPENSIVE",
             "budget": {
@@ -222,7 +222,7 @@
         },
         {
             "profile_id": 12,
-            "gender": "GIRL",
+            "gender": "FEMALE",
             "income_level": "HIGH",
             "city_level": "LESS EXPENSIVE",
             "budget": {
