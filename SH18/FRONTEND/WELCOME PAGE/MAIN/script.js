@@ -1,7 +1,11 @@
-const storedUserData = localStorage.getItem("userdata");
+const usersStorageKey = "users";
+const activeUserStorageKey = "activeUserId";
+const storedUsers = localStorage.getItem(usersStorageKey);
 
 try {
-	const userData = JSON.parse(storedUserData || "null");
+	const users = JSON.parse(storedUsers || "[]");
+	const activeUserId = localStorage.getItem(activeUserStorageKey);
+	const userData = users.find((user) => user.id === activeUserId);
 
 	if (!userData?.id || userData.status !== "pass") {
 		window.location.href = "../START/start.HTML";
@@ -11,8 +15,20 @@ try {
 }
 
 const logoutButton = document.querySelector('button[type="logout"]');
+const menuItems = document.querySelectorAll(".menu-item[data-panel]");
+const dashboardPanels = document.querySelectorAll(".dashboard-block");
+
+menuItems.forEach((menuItem) => {
+
+	menuItem.addEventListener("click", () => {
+		const selectedPanel = document.querySelector(`#${menuItem.dataset.panel}`);
+
+		menuItems.forEach((item) => item.classList.toggle("active", item === menuItem));
+		dashboardPanels.forEach((panel) => panel.classList.toggle("is-selected", panel === selectedPanel));
+	});
+});
 
 logoutButton.addEventListener("click", () => {
-	localStorage.clear();
+	localStorage.removeItem(activeUserStorageKey);
 	window.location.href = "../START/start.HTML";
 });

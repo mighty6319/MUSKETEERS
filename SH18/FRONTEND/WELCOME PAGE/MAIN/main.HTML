@@ -11,8 +11,10 @@ Learn money by living it.
 Create your financial identity.
 Experience life events.
 See the consequences of your choices.">
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
     <title>KNOW'E LEDGER</title>
     <link rel="stylesheet" href="style.css">
+    <script src="validation-data.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -42,27 +44,27 @@ See the consequences of your choices.">
 
             <nav class="sidebar-menu">
 
-                <button class="menu-item active">
+                <button class="menu-item active" type="button" data-panel="profile-panel">
                     <span class="menu-icon">👤</span>
                     <span>Profile</span>
                 </button>
 
-                <button class="menu-item">
+                <button class="menu-item" type="button" data-panel="income-panel">
                     <span class="menu-icon">💰</span>
-                    <span>Income & Expenses</span>
+                    <span>Income &amp; Expenses</span>
                 </button>
 
-                <button class="menu-item">
+                <button class="menu-item" type="button" data-panel="goals-panel">
                     <span class="menu-icon">🎯</span>
-                    <span>Goals & Savings</span>
+                    <span>Goals &amp; Savings</span>
                 </button>
 
-                <button class="menu-item">
+                <button class="menu-item" type="button" data-panel="charts-panel">
                     <span class="menu-icon">📊</span>
                     <span>Charts</span>
                 </button>
 
-                <button class="menu-item">
+                <button class="menu-item" type="button" data-panel="achievement-panel">
                     <span class="menu-icon">🏆</span>
                     <span>Achievements</span>
                 </button>
@@ -70,6 +72,56 @@ See the consequences of your choices.">
             </nav>
 
         </aside>
+
+        <section class="dashboard-content" aria-label="Dashboard overview">
+            <section id="profile-panel" class="dashboard-block profile-block is-selected">
+                <div class="profile-panel-heading">
+                    <span class="profile-eyebrow">PLAYER PROFILE</span>
+                    <h2 id="profileUsername">PROFILE</h2>
+                    <p id="profileStatus">DATABASE CONFIRMED</p>
+                </div>
+                <div id="profileData" class="profile-data" aria-live="polite"></div>
+            </section>
+
+            <section id="income-panel" class="dashboard-block split-block income-expense-panel">
+                <div class="expense-panel-heading">
+                    <div>
+                        <span class="panel-eyebrow">MONEY MAP</span>
+                        <h2>INCOME &amp; EXPENSES</h2>
+                    </div>
+                    <span class="expense-panel-note">WHERE YOUR SALARY GOES</span>
+                </div>
+                <div class="expense-summary">
+                    <div id="incomeMetric" class="metric-block income-metric">INCOME: Loading...</div>
+                    <div id="expenseMetric" class="metric-block expense-metric">EXPENSES: Loading...</div>
+                </div>
+                <div id="expenseChart" class="expense-chart" aria-label="Expenses as a percentage of salary"></div>
+            </section>
+
+            <section id="goals-panel" class="dashboard-block split-block">
+                <h2>GOALS &amp; SAVINGS</h2>
+                <div class="metric-block">GOALS</div>
+                <div class="metric-block">SAVINGS</div>
+            </section>
+
+            <section id="charts-panel" class="dashboard-block charts-block">
+                <h2>CHARTS</h2>
+                <div class="chart-grid">
+                    <div class="chart-tile expense-pie-tile">
+                        <div id="expensePieChart" class="expense-pie-chart" aria-label="Expense distribution pie chart"></div>
+                        <div id="expensePieLegend" class="expense-pie-legend"></div>
+                    </div>
+                    <div class="chart-tile"></div>
+                    <div class="chart-tile"></div>
+                    <div class="chart-tile"></div>
+                </div>
+            </section>
+
+            <section id="achievement-panel" class="dashboard-block achievement-block">
+                <h2>ACHIEVEMENT</h2>
+                <p>🔒 YET TO UNLOCK</p>
+            </section>
+        </section>
 
 
 
