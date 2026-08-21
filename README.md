@@ -1,60 +1,86 @@
-# SH18 - Fintech Platform
+# KNOW'E LEDGER
 
-A comprehensive fintech solution designed to streamline financial operations, integrate AI-driven insights, and provide robust backend and frontend architecture for modern financial services.
+KNOW'E LEDGER is a financial learning platform where users create a profile, explore how their income is distributed across expenses, and make decisions in a risk-free simulation environment.
 
-## 🎯 Project Overview
+The project is currently in development. The working application consists of a static HTML/CSS/JavaScript frontend, a FastAPI backend, and a PostgreSQL database.
 
-SH18 is an advanced full-stack fintech platform engineered to revolutionize financial learning and decision-making through deterministic simulation-based analysis. The platform integrates sophisticated AI algorithms with digital AI-predicted data to enable users to simulate, analyze, and optimize financial strategies in a controlled, risk-free environment.
+## Features
 
-Built on a robust architecture, SH18 empowers financial professionals, educators, and learners with tools to:
-- **Simulate Financial Scenarios**: Run deterministic simulations to predict outcomes under various market conditions
-- **Machine Learning Integration**: Leverage AI-driven insights for pattern recognition and predictive financial analytics
-- **Deterministic Learning**: Provide consistent, reproducible financial learning experiences through simulation-based education
-- **Enterprise-Grade Security**: Ensure data integrity and security for sensitive financial information
-- **Scalable Infrastructure**: Support high-volume simulations and concurrent user sessions
+- Create and verify a player profile.
+- Store profile, salary, and expense data in PostgreSQL.
+- View saved profile and expense data on the dashboard.
+- Display income and expense summaries and charts.
+- Load survey data from the backend.
+- Use the financial rules documented in [`SH18/DOCS/FINACIAL-RULES.md`](SH18/DOCS/FINACIAL-RULES.md).
 
-## 📁 Project Structure
+## Project Structure
 
-| Folder | Description | Link |
-|--------|-------------|------|
-| **BACKEND** | Server-side logic, APIs, and AI integration | [View Backend →](./BACKEND/) |
-| **FRONTEND** | User interface and client-side application | [View Frontend →](./FRONTEND/) |
-| **DATABASE** | Database schemas, migrations, and data models | [View Database →](./DATABASE/) |
-| **DOCS** | Documentation, guides, and specifications | [View Docs →](./DOCS/) |
+```text
+SH18/
+├── BACKEND/                 FastAPI application and PostgreSQL access
+│   ├── data/                Survey data
+│   └── main.py              API entry point
+├── DATABASE/                Database resources
+├── DOCS/                    Project documentation
+└── FRONTEND/
+	├── MUSIC/               Background audio
+	├── assets/              Images, video, and favicon
+	└── WELCOME PAGE/
+		├── START/           Landing page, login, and profile setup
+		└── MAIN/            Authenticated dashboard
+```
 
-## 🤖 Key Features
+## Requirements
 
-- **AI Integration**: Advanced AI capabilities integrated in the backend for intelligent financial analysis
-- **Secure Architecture**: Enterprise-grade security for sensitive financial data
-- **Responsive UI**: Modern frontend for desktop and mobile users
-- **RESTful APIs**: Well-structured backend APIs for seamless integration
+- Python 3.10 or newer
+- PostgreSQL running locally on port `5432`
+- A database named `KNOW'E LEDGER`
+- A modern web browser
 
-## 👥 Contributors
+The repository does not yet include a dependency lockfile or requirements file. Install the backend packages with:
 
-| Name | Profile |
-|------|---------|
-| Ayush | [GitHub Profile](https://github.com/ayush) |
-| Bash | [GitHub Profile](https://github.com/bash) |
+```powershell
+py -m pip install fastapi uvicorn psycopg2-binary pydantic
+```
 
-## 🚀 Quick Links
+## Run Locally
 
-- [Backend Documentation](./BACKEND/): API endpoints and server configuration
-- [Frontend Guide](./FRONTEND/): UI components and client setup
-- [Database Schema](./DATABASE/): Data models and database structure
-- [Project Docs](./DOCS/): Comprehensive documentation and guides
+### 1. Configure PostgreSQL
 
-## 📝 Getting Started
+Create the `KNOW'E LEDGER` database and the tables expected by the backend: `auth_data`, `user_data`, and `user_expenses`.
 
-Refer to the respective folder documentation to get started with development:
-- Backend setup instructions in `BACKEND/`
-- Frontend setup instructions in `FRONTEND/`
-- Database configuration in `DATABASE/`
+Update the connection settings in [`SH18/BACKEND/database.py`](SH18/BACKEND/database.py) to match your local PostgreSQL user and password. The current file uses `postgres` / `POSTGRES` by default.
 
-## 📞 Support
+### 2. Start the API
 
-For issues, questions, or contributions, please refer to the `DOCS/` folder for detailed guidelines.
+From the repository root:
 
----
+```powershell
+cd SH18\BACKEND
+py -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
 
-**Last Updated**: 2026-08-16  
-**Status**: In Development
+The API will be available at `http://127.0.0.1:8000`. FastAPI's interactive documentation is available at `http://127.0.0.1:8000/docs`.
+
+### 3. Open the frontend
+
+Open [`SH18/FRONTEND/WELCOME PAGE/START/start.html`](SH18/FRONTEND/WELCOME%20PAGE/START/start.html) in a browser. The frontend JavaScript expects the API to be running at `http://127.0.0.1:8000`.
+
+## API Endpoints
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/` | Health check |
+| `GET` | `/api/survey-data` | Return survey data |
+| `GET` | `/api/username-check?username=...` | Check whether a username exists |
+| `GET` | `/api/auth-data?username=...&id=...` | Verify a user and load their profile |
+| `POST` | `/api/user-data` | Save authentication, profile, and expense data |
+
+## Contributors
+
+- Ayush
+- Bash
+
+## Status
+
+In development. Database schema setup, financial rules, and additional simulation features are still being expanded.
