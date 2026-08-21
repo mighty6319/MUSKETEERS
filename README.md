@@ -79,7 +79,29 @@ Open [`SH18/FRONTEND/WELCOME PAGE/START/start.html`](SH18/FRONTEND/WELCOME%20PAG
 ## Contributors
 
 - Ayush
-- Bash
+```bash
+  https://github.com/mighty6319
+```
+- Shristi
+```bash
+  https://github.com/SHRISTI125
+```
+- Aditya
+```bash
+  https://github.com/AG-SPYaadi
+```
+- Anirban
+```bash
+  https://github.com/ANIRBAN-ROY-2203
+```
+- Subrat
+```bash
+  https://github.com/Lieve-EZ
+```
+- Ankit
+```bash
+  https://github.com/Ankit-1907
+```
 
 ## Status
 
