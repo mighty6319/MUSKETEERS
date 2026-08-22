@@ -1,89 +1,177 @@
-const USER_ID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz^$*";
+// ============================================================
+// LOCAL USER STORAGE
+// ============================================================
+
 const USERS_STORAGE_KEY = "users";
 const ACTIVE_USER_STORAGE_KEY = "activeUserId";
 
-function validateProfile(username) {
-    return username.trim() === "" ? "fail" : "pass";
-}
+
+// ============================================================
+// USER ID
+// ============================================================
+
+const USER_ID_CHARACTERS =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz^$*";
+
 
 function generateUserId() {
-    return Array.from({ length: 7 }, () =>
-        USER_ID_CHARACTERS[Math.floor(Math.random() * USER_ID_CHARACTERS.length)]
+
+    return Array.from(
+        { length: 7 },
+        () =>
+            USER_ID_CHARACTERS[
+                Math.floor(
+                    Math.random() * USER_ID_CHARACTERS.length
+                )
+            ]
     ).join("");
 }
 
+
+// ============================================================
+// BASIC USERNAME VALIDATION
+// ============================================================
+
+function validateProfile(username) {
+
+    return username.trim() === ""
+        ? "fail"
+        : "pass";
+}
+
+
+// ============================================================
+// READ USERS
+// ============================================================
+
 function readUsers() {
-    const storedUsers = localStorage.getItem(USERS_STORAGE_KEY);
 
-    if (storedUsers) {
-        try {
-            const users = JSON.parse(storedUsers);
-            if (Array.isArray(users)) {
-                return users.map(({ username, id, status }) => ({ username, id, status }));
-            }
-        } catch {
-            return [];
-        }
-    }
+    const storedUsers =
+        localStorage.getItem(USERS_STORAGE_KEY);
 
-    const legacyUser = localStorage.getItem("userdata");
-    if (!legacyUser) {
+    if (!storedUsers) {
+
         return [];
     }
 
     try {
-        const user = JSON.parse(legacyUser);
-        if (user?.id && user?.username) {
-            localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify([user]));
-            return [user];
+
+        const users = JSON.parse(storedUsers);
+
+        if (!Array.isArray(users)) {
+
+            return [];
         }
+
+        return users;
+
     } catch {
+
         return [];
     }
-
-    return [];
 }
+
+
+// ============================================================
+// FIND USER
+// ============================================================
 
 function readUserData(username = null) {
-    const users = readUsers();
-    const activeUserId = localStorage.getItem(ACTIVE_USER_STORAGE_KEY);
 
-    return users.find((user) => username
-        ? user.username.toLowerCase() === username.toLowerCase()
-        : user.id === activeUserId) || null;
+    const users = readUsers();
+
+    const activeUserId =
+        localStorage.getItem(ACTIVE_USER_STORAGE_KEY);
+
+    if (username !== null) {
+
+        return (
+            users.find(
+                user =>
+                    typeof user.username === "string" &&
+                    user.username.toLowerCase() ===
+                        username.trim().toLowerCase()
+            ) || null
+        );
+    }
+
+    return (
+        users.find(
+            user => user.id === activeUserId
+        ) || null
+    );
 }
 
-function createUserData(username, status = "pending", existingUserData = null) {
-    const userData = {
-        username,
-        id: existingUserData?.id || generateUserId(),
+
+// ============================================================
+// CREATE USER DATA
+// ============================================================
+
+function createUserData(
+    username,
+    status = "pending",
+    existingUserData = null
+) {
+
+    return {
+
+        username: username.trim(),
+
+        // IMPORTANT:
+        // Existing ID is NEVER regenerated.
+        id:
+            existingUserData?.id ||
+            generateUserId(),
+
         status
     };
-
-    return userData;
 }
 
-function saveUserData(username, status, existingUserData = null, profile = null) {
+
+// ============================================================
+// SAVE USER
+// ============================================================
+
+function saveUserData(
+    username,
+    status,
+    existingUserData = null
+) {
+
     const users = readUsers();
-    const userData = {
-        ...createUserData(username, status, existingUserData)
-    };
-    const existingIndex = users.findIndex((user) => user.id === userData.id);
+
+    const userData = createUserData(
+        username,
+        status,
+        existingUserData
+    );
+
+    const existingIndex =
+        users.findIndex(
+            user => user.id === userData.id
+        );
 
     if (existingIndex >= 0) {
+
         users[existingIndex] = {
             ...users[existingIndex],
             ...userData
         };
+
     } else {
+
         users.push(userData);
     }
 
-    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
-    localStorage.setItem(ACTIVE_USER_STORAGE_KEY, userData.id);
-    return userData;
-}
+    localStorage.setItem(
+        USERS_STORAGE_KEY,
+        JSON.stringify(users)
+    );
 
-function saveValidationState(username, status, existingUserData = null) {
-    return saveUserData(username, status, existingUserData);
+    localStorage.setItem(
+        ACTIVE_USER_STORAGE_KEY,
+        userData.id
+    );
+
+    return userData;
 }

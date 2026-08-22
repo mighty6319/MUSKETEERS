@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700;900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap');
 /* =========================
@@ -350,7 +350,25 @@ footer {
         0 0 70px rgba(109, 40, 217, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.25),
         inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+
+    animation: loginFromBack 0.42s ease both;
 }
+
+#login.is-closing {
+    animation: loginToSide 0.24s ease-in both;
+    pointer-events: none;
+}
+
+@keyframes loginFromBack {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.72); filter: blur(8px); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+}
+
+@keyframes loginToSide {
+    from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    to { opacity: 0; transform: translate(32vw, -50%) scale(0.78) rotate(4deg); }
+}
+
 
 #login::before,
 #login::after {
@@ -681,6 +699,21 @@ footer {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     isolation: isolate;
+    animation: profileFromBack 0.42s ease both;
+}
+
+#profileBlock.is-closing {
+    animation: profileToSide 0.18s ease-in both;
+}
+
+@keyframes profileFromBack {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.72); filter: blur(8px); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+}
+
+@keyframes profileToSide {
+    from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    to { opacity: 0; transform: translate(32vw, -50%) scale(0.78) rotate(4deg); }
 }
 
 .profile-intro {

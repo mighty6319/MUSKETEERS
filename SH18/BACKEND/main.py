@@ -9,11 +9,13 @@ from auth import save_auth_data
 from database import get_connection
 
 
-# Creates the FastAPI application
+# ============================================================
+# FASTAPI APPLICATION
+# ============================================================
+
 app = FastAPI()
 
 
-# Allows your frontend to communicate with FastAPI
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,23 +28,39 @@ app.add_middleware(
 SURVEY_DATA_PATH = Path(__file__).parent / "data" / "survey_data.json"
 
 
-# Test route to check whether FastAPI is running
+# ============================================================
+# HOME
+# ============================================================
+
 @app.get("/")
 def home():
-
     return {
         "message": "KNOW'E LEDGER backend is running"
     }
 
 
+# ============================================================
+# SURVEY DATA
+# ============================================================
+
 @app.get("/api/survey-data")
 def get_survey_data():
 
-    return json.loads(SURVEY_DATA_PATH.read_text(encoding="utf-8"))
+    return json.loads(
+        SURVEY_DATA_PATH.read_text(encoding="utf-8")
+    )
 
+
+# ============================================================
+# USERNAME CHECK
+# ============================================================
 
 @app.get("/api/username-check")
-def check_username(username: str = Query(..., min_length=1)):
+def check_username(
+    username: str = Query(..., min_length=1)
+):
+
+    username = username.strip()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -56,13 +74,28 @@ def check_username(username: str = Query(..., min_length=1)):
                 WHERE LOWER(username) = LOWER(%s)
             )
             """,
-            (username.strip(),)
+            (username,)
         )
-        return {"exists": cursor.fetchone()[0]}
+
+        result = cursor.fetchone()
+
+        # Safety check:
+        # fetchone() can technically return None.
+        if result is None:
+            return {"exists": False}
+
+        return {
+            "exists": bool(result[0])
+        }
+
     finally:
         cursor.close()
         conn.close()
 
+
+# ============================================================
+# AUTHENTICATION / FINAL DATABASE CONFIRMATION
+# ============================================================
 
 @app.get("/api/auth-data")
 def get_auth_data(
@@ -70,119 +103,230 @@ def get_auth_data(
     user_id: str = Query(..., min_length=1, alias="id")
 ):
 
+    username = username.strip()
+    user_id = user_id.strip()
+
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
+
+        # ----------------------------------------------------
+        # STEP 1:
+        # Check username + ID together
+        # ----------------------------------------------------
+
         cursor.execute(
             """
             SELECT id, username, status
             FROM auth_data
-            WHERE LOWER(username) = LOWER(%s) AND id = %s
+            WHERE LOWER(username) = LOWER(%s)
+              AND id = %s
             """,
-            (username.strip(), user_id.strip())
+            (username, user_id)
         )
+
         auth_row = cursor.fetchone()
 
-        if not auth_row or auth_row[2] != "pass":
-            raise HTTPException(status_code=404, detail="User was not confirmed by the database.")
+        # fetchone() may return None.
+        if auth_row is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Username and User ID do not match."
+            )
 
-        user_id, confirmed_username, status = auth_row
+        database_id = auth_row[0]
+        confirmed_username = auth_row[1]
+        status = auth_row[2]
+
+        # ----------------------------------------------------
+        # STEP 2:
+        # Database status must be PASS
+        # ----------------------------------------------------
+
+        if status != "pass":
+            raise HTTPException(
+                status_code=403,
+                detail="This account is not confirmed."
+            )
+
+        # ----------------------------------------------------
+        # STEP 3:
+        # Get profile
+        # ----------------------------------------------------
+
         cursor.execute(
             """
-            SELECT age, income_preference, gender, nature, city, salary
+            SELECT
+                age,
+                income_type,
+                gender,
+                nature,
+                city,
+                salary
             FROM user_data
             WHERE id = %s
             """,
-            (user_id,)
+            (database_id,)
         )
+
         profile_row = cursor.fetchone()
 
-        if not profile_row:
-            raise HTTPException(status_code=404, detail="The user's profile is incomplete.")
+        if profile_row is None:
+            raise HTTPException(
+                status_code=404,
+                detail="The user's profile is incomplete."
+            )
+
+        (
+            age,
+            income_type,
+            gender,
+            nature,
+            city,
+            salary
+        ) = profile_row
+
+        # ----------------------------------------------------
+        # STEP 4:
+        # Get expenses
+        # ----------------------------------------------------
 
         cursor.execute(
             """
-            SELECT category, percentage, amount
+            SELECT
+                category,
+                percentage,
+                amount
             FROM user_expenses
             WHERE id = %s
             ORDER BY category
             """,
-            (user_id,)
+            (database_id,)
         )
-        expenses = [
-            {"category": category, "percentage": percentage, "amount": amount}
-            for category, percentage, amount in cursor.fetchall()
-        ]
 
-        age, income, gender, nature, city, salary = profile_row
+        expense_rows = cursor.fetchall()
+
+        expenses = []
+
+        for row in expense_rows:
+
+            category = row[0]
+            percentage = row[1]
+            amount = row[2]
+
+            expenses.append(
+                {
+                    "category": category,
+                    "percentage": float(percentage),
+                    "amount": float(amount)
+                }
+            )
+
+        # ----------------------------------------------------
+        # FINAL RESPONSE
+        # ----------------------------------------------------
+
         return {
             "userdata": {
                 "username": confirmed_username,
-                "id": user_id,
+                "id": database_id,
                 "status": status
             },
+
             "profile": {
                 "age": age,
-                "income": income,
+                "income_type": income_type,
                 "gender": gender,
                 "nature": nature,
                 "city": city,
-                "salary": salary,
+                "salary": float(salary),
                 "expenses": expenses
             }
         }
+
     finally:
         cursor.close()
         conn.close()
 
 
-# Receives userdata and profile JSON from JavaScript
-@app.post("/api/user-data")
-def receive_user_data(data: UserDataRequest):
+# ============================================================
+# CREATE / SAVE USER PROFILE
+# ============================================================
 
-    # Get authentication information
+@app.post("/api/user-data")
+def receive_user_data(
+    data: UserDataRequest
+):
+
+    # ========================================================
+    # USER DATA
+    # ========================================================
+
     user_id = data.userdata.id
-    username = data.userdata.username
+    username = data.userdata.username.strip()
+
+    # New profiles are confirmed after successful DB save.
     status = "pass"
 
-    # Get profile information
+    # ========================================================
+    # PROFILE DATA
+    # ========================================================
+
     age = data.profile.age
-    income = data.profile.income
+    income_type = data.profile.income_type
     gender = data.profile.gender
     nature = data.profile.nature
     city = data.profile.city
     salary = data.profile.salary
-    expenses = data.profile.Expenses
+    expenses = data.profile.expenses
 
-    # Print received data for testing
+    print("========================================")
+    print("CREATING USER PROFILE")
+    print("========================================")
+
     print("USER ID:", user_id)
     print("USERNAME:", username)
     print("STATUS:", status)
 
     print("AGE:", age)
-    print("INCOME:", income)
+    print("INCOME TYPE:", income_type)
     print("GENDER:", gender)
     print("NATURE:", nature)
     print("CITY:", city)
     print("SALARY:", salary)
-    
     print("EXPENSES:", expenses)
 
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
+
+        # ====================================================
+        # USERNAME MUST BE UNIQUE
+        # ====================================================
+
         cursor.execute(
             """
             SELECT id
             FROM auth_data
-            WHERE LOWER(username) = LOWER(%s) AND id <> %s
+            WHERE LOWER(username) = LOWER(%s)
+              AND id <> %s
             """,
-            (username.strip(), user_id)
+            (username, user_id)
         )
-        if cursor.fetchone():
-            raise HTTPException(status_code=409, detail="This username already exists.")
+
+        existing_row = cursor.fetchone()
+
+        if existing_row is not None:
+            raise HTTPException(
+                status_code=409,
+                detail="This username already exists."
+            )
+
+        # ====================================================
+        # SAVE AUTH DATA
+        # ====================================================
 
         save_auth_data(
             user_id,
@@ -191,24 +335,37 @@ def receive_user_data(data: UserDataRequest):
             conn
         )
 
+        # ====================================================
+        # SAVE PROFILE
+        # ====================================================
+
         cursor.execute(
             """
             INSERT INTO user_data
             (
                 id,
                 age,
-                income_preference,
+                income_type,
                 gender,
                 nature,
                 city,
                 salary
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            VALUES
+            (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (id)
+            DO UPDATE SET
+                age = EXCLUDED.age,
+                income_type = EXCLUDED.income_type,
+                gender = EXCLUDED.gender,
+                nature = EXCLUDED.nature,
+                city = EXCLUDED.city,
+                salary = EXCLUDED.salary
             """,
             (
                 user_id,
                 age,
-                income,
+                income_type,
                 gender,
                 nature,
                 city,
@@ -216,8 +373,24 @@ def receive_user_data(data: UserDataRequest):
             )
         )
 
+        # ====================================================
+        # REPLACE EXPENSES FOR THIS USER
+        # ====================================================
+
+        cursor.execute(
+            """
+            DELETE FROM user_expenses
+            WHERE id = %s
+            """,
+            (user_id,)
+        )
+
         for category, percentage in expenses.items():
-            amount = salary * float(percentage) / 100
+
+            percentage = float(percentage)
+
+            amount = salary * percentage / 100
+
             cursor.execute(
                 """
                 INSERT INTO user_expenses
@@ -227,7 +400,8 @@ def receive_user_data(data: UserDataRequest):
                     percentage,
                     amount
                 )
-                VALUES (%s, %s, %s, %s)
+                VALUES
+                (%s, %s, %s, %s)
                 """,
                 (
                     user_id,
@@ -237,16 +411,30 @@ def receive_user_data(data: UserDataRequest):
                 )
             )
 
+        # ====================================================
+        # COMMIT EVERYTHING
+        # ====================================================
+
         conn.commit()
+
+    except HTTPException:
+        conn.rollback()
+        raise
+
     except Exception:
         conn.rollback()
         raise
+
     finally:
         cursor.close()
         conn.close()
 
-    # Send response back to JavaScript
     return {
         "status": "success",
-        "message": "User data received successfully"
+        "message": "User data received successfully",
+        "userdata": {
+            "id": user_id,
+            "username": username,
+            "status": status
+        }
     }
