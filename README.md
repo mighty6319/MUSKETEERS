@@ -4,6 +4,8 @@ KNOW'E LEDGER is a financial learning platform where users create a profile, exp
 
 The project is currently in development. The working application consists of a static HTML/CSS/JavaScript frontend, a FastAPI backend, and a PostgreSQL database.
 
+Repository: [github.com/mighty6319/MUSKETEERS](https://github.com/mighty6319/MUSKETEERS)
+
 ## Features
 
 - Create and verify a player profile.
@@ -36,6 +38,29 @@ SH18/
 - PostgreSQL running locally on port `5432`
 - A database named `KNOW'E LEDGER`
 - A modern web browser
+
+## Tech Stack
+
+### Frontend
+
+- HTML5 for page structure
+- CSS3 for layout, responsive styling, and animations
+- Vanilla JavaScript for validation, navigation, API requests, and dashboard updates
+- HTML5 video and audio assets for the welcome experience
+
+### Backend
+
+- Python 3.10+
+- FastAPI for the REST API
+- Uvicorn as the local ASGI server
+- Pydantic for request validation
+- PostgreSQL for profile, authentication, and expense data
+- `psycopg2` for PostgreSQL connectivity
+
+### Data and Documentation
+
+- JSON for survey data
+- Markdown for project and financial-rules documentation
 
 The repository does not yet include a dependency lockfile or requirements file. Install the backend packages with:
 
@@ -78,8 +103,10 @@ Open [`SH18/FRONTEND/WELCOME PAGE/START/start.html`](SH18/FRONTEND/WELCOME%20PAG
 
 ## Contributors
 
-- Ayush
-- Bash
+- Ayush saw - [GitHub profile](https://github.com/iamayushsaw) *(profile could not be verified from the available repository metadata)*
+- Shristi Simran - [@SHRISTI125](https://github.com/SHRISTI125)
+
+The complete, automatically generated contributor list is available on the [GitHub contributors page](https://github.com/mighty6319/MUSKETEERS/graphs/contributors). GitHub invitation-only collaborators are not exposed through the repository commit history or unauthenticated API; they can be viewed by repository administrators under **Settings > Collaborators**.
 
 ## Status
 
