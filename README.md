@@ -103,7 +103,7 @@ Open [`SH18/FRONTEND/WELCOME PAGE/START/start.html`](SH18/FRONTEND/WELCOME%20PAG
 
 ## Contributors
 
-- Ayush saw - [GitHub profile](https://github.com/iamayushsaw) *(profile could not be verified from the available repository metadata)*
+- Ayush saw - [Ayush Saw](https://github.com/mighty6319
 - Shristi Simran - [@SHRISTI125](https://github.com/SHRISTI125)
 
 The complete, automatically generated contributor list is available on the [GitHub contributors page](https://github.com/mighty6319/MUSKETEERS/graphs/contributors). GitHub invitation-only collaborators are not exposed through the repository commit history or unauthenticated API; they can be viewed by repository administrators under **Settings > Collaborators**.
