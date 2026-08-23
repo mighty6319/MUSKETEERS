@@ -835,3 +835,225 @@ footer {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+/* =========================================================
+   START SIMULATION BUTTON
+   ========================================================= */
+
+#startSimulationBtn {
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+
+    width: 280px;
+    height: 280px;
+
+    z-index: 10000;
+
+    border: none;
+    border-radius: 0 100% 0 0;
+
+    background:
+        linear-gradient(
+            225deg,
+            #9d4edd2c 0%,
+            #6a20b871 25%,
+            #32105f 58%,
+            #10051893 82%,
+            #000000e8 100%
+        );
+
+    color: white;
+
+    font-family: 'Oxanium', sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+
+    letter-spacing: 4px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+/* START text */
+
+#startSimulationBtn {
+    text-indent: -50px;
+}
+
+
+/* Hover */
+
+#startSimulationBtn:hover {
+    transform: scale(1.02);
+}
+
+
+/* =========================================================
+   PURPLE EXPANSION LAYER
+   ========================================================= */
+
+#simulationPurple {
+
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+
+    width: 280px;
+    height: 280px;
+
+    border-radius: 0 100% 0 0;
+
+    background:
+        linear-gradient(
+
+            #9d4edd52 0%,
+            #6a20b842 25%,
+            #32105f35 58%,
+            #1005183b 82%,
+            #00000000 100%
+        );
+
+    z-index: 9999;
+
+    pointer-events: none;
+
+    /*
+       IMPORTANT:
+       The quarter circle is already visible.
+    */
+
+    transform: scale(1);
+
+    transform-origin: bottom left;
+
+    will-change: transform;
+
+    backface-visibility: hidden;
+}
+
+
+/* =========================================================
+   BLACK TAKEOVER
+   ========================================================= */
+
+#simulationBlack {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    background:
+        radial-gradient(
+            circle at 70% 30%,
+            #181818 0%,
+            #080808 50%,
+            #000000 100%
+        );
+}
+
+
+/* =========================================================
+   BEFORE CLICK
+   ========================================================= */
+
+#simulationPurple {
+    transition: none;
+}
+
+
+/* =========================================================
+   AFTER START CLICK
+   ========================================================= */
+
+
+/*
+   Hide the original START button.
+*/
+
+body.simulation-starting #startSimulationBtn {
+
+    opacity: 0;
+
+    transform: scale(0.8);
+
+    pointer-events: none;
+}
+
+
+/*
+   Quarter circle expands smoothly.
+*/
+
+body.simulation-starting #simulationPurple {
+
+    animation:
+        quarterCircleExpand
+        1.3s
+        cubic-bezier(0.77, 0, 0.175, 1)
+        forwards;
+}
+
+
+/*
+   Black gradient comes after purple.
+*/
+
+body.simulation-black #simulationBlack {
+
+    animation:
+        blackTakeover
+        0.9s
+        ease
+        forwards;
+}
+
+
+/* =========================================================
+   QUARTER CIRCLE → FULL SCREEN
+   ========================================================= */
+
+@keyframes quarterCircleExpand {
+
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(20);
+    }
+}
+
+
+/* =========================================================
+   BLACK GRADIENT
+   ========================================================= */
+
+@keyframes blackTakeover {
+
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

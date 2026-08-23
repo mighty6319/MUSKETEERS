@@ -142,3 +142,39 @@ if (logoutButton) {
         }
     );
 }
+
+
+const startSimulationBtn =
+    document.getElementById("startSimulationBtn");
+
+
+if (startSimulationBtn) {
+
+    startSimulationBtn.addEventListener("click", () => {
+
+        startSimulationBtn.disabled = true;
+
+        // START THE ANIMATION
+        document.body.classList.add(
+            "simulation-starting"
+        );
+
+        // BLACK TAKES OVER
+        setTimeout(() => {
+
+            document.body.classList.add(
+                "simulation-black"
+            );
+
+        }, 1100);
+
+        // GO TO SIMULATION
+        setTimeout(() => {
+
+            window.location.href =
+                "../SIMULATION/simulation.html";
+
+        }, 2100);
+
+    });
+}
