@@ -5,7 +5,7 @@
 const music = document.querySelector("#bgMusic");
 const muteBtn = document.querySelector("#muteBtn");
 
-music.volume = 0.1;
+music.volume = 1;
 
 music.play().catch(() => {});
 
