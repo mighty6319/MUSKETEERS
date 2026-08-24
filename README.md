@@ -62,17 +62,17 @@ SH18/
 - JSON for survey data
 - Markdown for project and financial-rules documentation
 
-The repository does not yet include a dependency lockfile or requirements file. Install the backend packages with:
+Install the backend packages from the included requirements file:
 
 ```powershell
-py -m pip install fastapi uvicorn psycopg2-binary pydantic
+py -m pip install -r SH18\BACKEND\requirements.txt
 ```
 
 ## Run Locally
 
 ### 1. Configure PostgreSQL
 
-Create the `KNOW'E LEDGER` database and the tables expected by the backend: `auth_data`, `user_data`, and `user_expenses`.
+Create the `KNOW'E LEDGER` database and run [`SH18/BACKEND/schema.sql`](SH18/BACKEND/schema.sql) to create the tables expected by the backend: `auth_data`, `user_data`, `user_expenses`, and `simulation_state`.
 
 Update the connection settings in [`SH18/BACKEND/database.py`](SH18/BACKEND/database.py) to match your local PostgreSQL user and password. The current file uses `postgres` / `POSTGRES` by default.
 
@@ -103,7 +103,7 @@ Open [`SH18/FRONTEND/WELCOME PAGE/START/start.html`](SH18/FRONTEND/WELCOME%20PAG
 
 ## Contributors
 
-- Ayush saw - [GitHub profile](https://github.com/iamayushsaw) *(profile could not be verified from the available repository metadata)*
+- Ayush saw - [Ayush Saw](https://github.com/mighty6319)
 - Shristi Simran - [@SHRISTI125](https://github.com/SHRISTI125)
 
 The complete, automatically generated contributor list is available on the [GitHub contributors page](https://github.com/mighty6319/MUSKETEERS/graphs/contributors). GitHub invitation-only collaborators are not exposed through the repository commit history or unauthenticated API; they can be viewed by repository administrators under **Settings > Collaborators**.

@@ -366,7 +366,7 @@ function renderIncomeAndExpenses(
     let currentPercentage = 0;
 
 
-    expensePieLegend.replaceChildren();
+    expensePieLegend?.replaceChildren();
 
 
     expenses.forEach(
@@ -437,7 +437,7 @@ function renderIncomeAndExpenses(
             );
 
 
-            expensePieLegend.appendChild(
+            expensePieLegend?.appendChild(
                 legendItem
             );
         }
@@ -446,12 +446,12 @@ function renderIncomeAndExpenses(
 
     if (pieSegments.length > 0) {
 
-        expensePieChart.style.background =
+        if (expensePieChart) expensePieChart.style.background =
             `conic-gradient(${pieSegments.join(", ")})`;
 
     } else {
 
-        expensePieChart.style.background =
+        if (expensePieChart) expensePieChart.style.background =
             "none";
     }
 }
@@ -592,9 +592,7 @@ async function loadConfirmedProfile() {
         );
 
 
-        renderIncomeAndExpenses(
-            profile
-        );
+        // Month I simulation data is rendered by MAIN/script.js.
 
     } catch (error) {
 

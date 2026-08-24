@@ -14,8 +14,8 @@ See the consequences of your choices.">
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
     <title>KNOW'E LEDGER</title>
     <link rel="stylesheet" href="style.css">
-    <script src="validation-data.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="validation-data.js?v=month1-dashboard" defer></script>
+    <script src="script.js?v=month1-dashboard" defer></script>
 </head>
 
 <body>
@@ -92,11 +92,11 @@ See the consequences of your choices.">
                     <span class="expense-panel-note">WHAT YOUR MONEY HAS DONE SO FAR</span>
                 </div>
                 <div class="expense-summary">
-                    <div id="incomeMetric" class="metric-block income-metric">MONEY IN HAND: Loading...</div>
-                    <div id="expenseMetric" class="metric-block expense-metric">MONTH I: Loading...</div>
+                    <div id="incomeMetric" class="metric-block income-metric">MONEY AVAILABLE: INR 50,000</div>
+                    <div id="expenseMetric" class="metric-block expense-metric">MONTH I NOT PLAYED</div>
                 </div>
                 <h3 class="simulation-chart-title">CURRENT MONEY USAGE</h3>
-                <div id="expenseChart" class="expense-chart" aria-label="Current money usage"></div>
+                <div id="expenseChart" class="expense-chart" aria-label="Month I expense usage"><p>PLAY MONTH 1 TO SEE YOUR EXPENSES.</p></div>
             </section>
 
             <section id="goals-panel" class="dashboard-block split-block">
@@ -107,8 +107,12 @@ See the consequences of your choices.">
             </section>
 
             <section id="charts-panel" class="dashboard-block charts-block">
-                <h2>MONTHLY EXPENDITURE</h2>
-                <div id="monthlyExpenditureChart" class="monthly-expenditure-chart"></div>  </section>
+                <h2>MONTH I EXPENDITURE</h2>
+                <div id="monthlyExpenditureChart" class="monthly-expenditure-chart"></div>
+                <h2>MONTH I EXPENSE BREAKDOWN</h2>
+                    <div id="monthOnePieChart" class="month-one-pie-chart" aria-label="Month I expense pie chart"></div>
+                    <div id="monthOnePieLegend" class="month-one-pie-legend"></div>
+            </section>
 
             <section id="achievement-panel" class="dashboard-block achievement-block">
                 <h2>ACHIEVEMENT</h2>
@@ -121,6 +125,17 @@ See the consequences of your choices.">
     <button id="startSimulationBtn">
         START
     </button>
+
+    <section id="monthOneStartPanel" class="month-one-start-panel" aria-hidden="true">
+        <div class="month-one-start-card">
+            <span>SIMULATION</span>
+            <h2>IN PROGRESS: MONTH 1</h2>
+            <div class="month-one-start-actions">
+                <button id="playMonthOneButton" type="button">PLAY</button>
+                <button id="closeMonthOneStartButton" type="button">DASHBOARD</button>
+            </div>
+        </div>
+    </section>
 
 
     <!-- SIMULATION TRANSITION -->
@@ -140,6 +155,26 @@ See the consequences of your choices.">
         <hr>
         <p>© 2026 MUSKETEERS </p>
     </footer>
+    <style>
+        .sidebar { position: absolute; left: 2%; top: 0; bottom: 0; width: 20%; z-index: 30; pointer-events: auto; }
+        .dashboard-content { z-index: 20; }
+        .dashboard-content, .dashboard-content p, .dashboard-content span, .dashboard-content strong, .dashboard-content small { color: #fff; }
+        .dashboard-content p, .dashboard-content .monthly-month-label { color: rgba(255,255,255,.68); }
+        .month-one-chart-panel { display: block; }
+        .month-one-pie-chart { width: min(260px, 60vw); aspect-ratio: 1; margin: 24px auto; border-radius: 50%; background: none; box-shadow: 0 18px 50px rgba(0,0,0,.34), inset 0 0 0 10px rgba(0,0,0,.12); }
+        .month-one-pie-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin-top: 22px; font-size: .76rem; }
+        .month-one-pie-legend span { position: relative; padding-left: 14px; }
+        .month-one-pie-legend span::before { content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 8px; transform: translateY(-50%); border-radius: 50%; background: var(--legend-color); }
+        .month-one-start-panel { position: fixed; inset: 0; z-index: 11000; display: grid; place-items: center; background: rgba(4,0,12,.54); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+        .month-one-start-panel[hidden] { display: none; }
+        .month-one-start-panel.is-open { opacity: 1; pointer-events: auto; }
+        .month-one-start-card { width: min(560px, 86vw); padding: clamp(28px, 5vw, 52px); border: 1px solid rgba(255,255,255,.28); border-radius: 20px; background: linear-gradient(145deg, rgba(66,18,124,.84), rgba(13,2,32,.92)); color: #fff; text-align: center; box-shadow: 0 28px 90px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.2); }
+        .month-one-start-card span { font-size: .72rem; letter-spacing: .24em; opacity: .65; }
+        .month-one-start-card h2 { margin: 12px 0 28px; font: 700 clamp(1.35rem, 3vw, 2.2rem) 'Oxanium', sans-serif; letter-spacing: .08em; }
+        .month-one-start-actions { display: flex; justify-content: center; gap: 12px; }
+        .month-one-start-actions button { min-width: 130px; padding: 13px 18px; border: 1px solid rgba(255,255,255,.34); border-radius: 9px; background: rgba(255,255,255,.12); color: #fff; font-weight: 800; letter-spacing: .1em; cursor: pointer; }
+        .month-one-start-actions button:hover { background: rgba(255,255,255,.24); transform: translateY(-2px); }
+    </style>
 </body>
 
 </html>
