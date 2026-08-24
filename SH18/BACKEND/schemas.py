@@ -45,3 +45,15 @@ class UserDataRequest(BaseModel):
 
     userdata: UserData
     profile: ProfileData
+# ============================================================
+# SIMULATION CHECKPOINT
+# ============================================================
+
+class SimulationCheckpoint(BaseModel):
+    id: str
+    username: str
+    month: int
+    current_scene: str
+    completed_month: int
+    balance: float
+    state: Dict

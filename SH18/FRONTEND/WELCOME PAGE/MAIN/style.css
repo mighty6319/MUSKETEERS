@@ -1057,3 +1057,7 @@ body.simulation-black #simulationBlack {
         opacity: 1;
     }
 }
+/* ============================================================
+   KNOW'E LEDGER — LIVE SIMULATION FINANCIAL DASHBOARD
+============================================================ */
+.simulation-chart-title{margin:24px 0 12px;font-size:.8rem;letter-spacing:.16em;opacity:.65}.expense-chart{display:flex;flex-direction:column;gap:12px}.simulation-usage-row{display:grid;grid-template-columns:110px 1fr 90px;gap:12px;align-items:center;font-size:.78rem}.simulation-usage-track{height:10px;border-radius:20px;background:rgba(255,255,255,.08);overflow:hidden}.simulation-usage-fill{height:100%;border-radius:20px;background:currentColor}.monthly-expenditure-chart{display:flex;flex-direction:column;gap:14px;margin-top:25px;overflow:auto}.monthly-row{display:grid;grid-template-columns:100px repeat(3,minmax(100px,1fr));gap:14px;align-items:center;font-size:.75rem}.monthly-row-label{font-weight:700;letter-spacing:.05em}.monthly-month-cell{display:flex;align-items:center;gap:8px}.monthly-bar-track{height:9px;flex:1;background:rgba(255,255,255,.08);border-radius:20px;overflow:hidden}.monthly-bar-fill{height:100%;background:rgba(255,255,255,.75);border-radius:20px}.monthly-month-label{font-size:.6rem;opacity:.45}.goal-entry{margin:8px 0;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.08)}

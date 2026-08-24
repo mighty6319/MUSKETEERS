@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="KNOW'E LEDGER | SIMULATION">
-    <title>KNOW'E LEDGER | SIMULATION</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="KNOW'E LEDGER | SIMULATION">
+<title>KNOW'E LEDGER | SIMULATION</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
 </head>
 <body>
-<main class="simulation" aria-label="Financial simulation">
+<main class="simulation" aria-label="KNOW'E LEDGER financial life simulation">
 
-    <!-- ===================== SCENES ===================== -->
-    <img class="scene scene-zero active" src="../../assets/loading.jpeg" alt="Simulation opening scene">
-    <img class="scene scene-two" src="../../assets/scene2.jpeg" alt="Simulation scene two">
-    <img class="scene scene-three" src="../../assets/scene3.jpeg" alt="Simulation scene three">
-    <img class="scene scene-four" src="../../assets/scene4.jpeg" alt="Simulation scene four">
-
+    <img class="scene scene-zero active" src="../../assets/loading.jpeg" alt="Opening scene">
+    <img class="scene scene-two" src="../../assets/scene2.jpeg" alt="Scene two">
+    <img class="scene scene-three" src="../../assets/scene3.jpeg" alt="Scene three">
+    <img class="scene scene-four" src="../../assets/scene4.jpeg" alt="Scene four">
+    <img class="scene scene-five" src="../../assets/scene5.jpeg" alt="Scene five">
     <video id="sceneSix" class="scene scene-six" muted playsinline preload="auto">
         <source src="../../assets/scene6.mp4" type="video/mp4">
     </video>
 
-    <!-- ===================== LOADING ===================== -->
-    <div class="loading-screen">
+    <div class="loading-screen" id="loadingScreen">
         <div class="loading-phone">
             <div class="phone-camera"></div>
             <div class="loading-content">
@@ -35,107 +33,117 @@
         </div>
     </div>
 
-    <!-- ===================== REUSABLE CUTSCENE ===================== -->
-    <section id="cutsceneOverlay" class="cutscene-overlay" aria-hidden="true">
-        <div class="cutscene-tab">
-            <span id="cutsceneText">NEXT DAY</span>
-        </div>
-    </section>
-
-    <!-- ===================== SCENE 6 CURTAIN ===================== -->
     <div class="curtain curtain-top"></div>
     <div class="curtain curtain-bottom"></div>
 
-    <!-- ===================== MONTH ===================== -->
-    <section class="month-title" aria-label="Month one">
-        <span>MONTH I</span>
+    <section class="month-title" id="monthTitle" aria-hidden="true"><span>MONTH I</span></section>
+
+    <section id="cutsceneOverlay" class="cutscene-overlay" aria-hidden="true">
+        <div class="cutscene-tab"><span id="cutsceneText">NEXT DAY</span></div>
     </section>
 
-    <!-- ===================== REUSABLE NOTIFICATION ===================== -->
     <section id="notificationLayer" class="notification-layer" aria-live="polite"></section>
 
-    <!-- ===================== HOUSE SEARCH ===================== -->
-    <section id="houseSearchOverlay" class="house-search-overlay" aria-label="House search">
-        <div id="searchNotification" class="ios-notification">
+    <section id="houseSearchOverlay" class="house-search-overlay" aria-hidden="true">
+        <div class="ios-notification">
             <div class="notification-topline">
                 <div class="notification-app-icon">⌂</div>
-                <span class="notification-app">KNOW'E LEDGER</span>
-                <span class="notification-time">NOW</span>
+                <span>KNOW'E LEDGER</span><small>NOW</small>
             </div>
-            <div class="notification-title">Search for a house to rent</div>
+            <strong>Search for a house to rent</strong>
         </div>
-
         <button id="searchHomeButton" type="button">SEARCH FOR HOUSE</button>
     </section>
 
-    <!-- ===================== HOME OPTIONS ===================== -->
-    <section class="home-panel" aria-label="Home rental options">
+    <section class="home-panel" id="homePanel" aria-hidden="true">
         <div class="home-panel-header">
             <div>
                 <span class="panel-kicker">MONTH I</span>
                 <h2>CHOOSE YOUR HOME</h2>
-                <p class="balance-line">AVAILABLE SAVINGS <strong id="availableSavings">₹50,000</strong></p>
+                <p class="balance-line">MONEY IN HAND <strong id="availableSavings">₹50,000</strong></p>
             </div>
-            <button class="close-panel" type="button" aria-label="Close home selection">×</button>
+            <button class="close-panel" id="closeHomePanel" type="button" aria-label="Close">×</button>
         </div>
-
         <div class="home-slides">
-            <article class="home-slide" data-home="starter">
-                <div class="slide-image" style="background-image:url('../../assets/house1.jpeg');"></div>
-                <div class="slide-info">
-                    <span class="slide-number">01 / 03</span>
-                    <h3 id="starterRent">LOADING RENT...</h3>
-                    <p>DISTANCE FROM OFFICE : 1.7KM</p>
-                    <p class="slide-price">1 SHARING FLAT</p>
-                </div>
-                <button class="slide-button" type="button" data-home="starter">RENT</button>
+            <article class="home-slide active">
+                <div class="slide-image" style="background-image:url('../../assets/house1.jpeg')"></div>
+                <div class="slide-info"><span>01 / 03</span><h3 id="starterRent">LOADING...</h3><p>1 SHARING FLAT</p><p class="slide-price">TRANSPORT: ORIGINAL RATE</p></div>
+                <button class="slide-button" data-home="starter">RENT</button>
             </article>
-
-            <article class="home-slide" data-home="comfort">
-                <div class="slide-image" style="background-image:url('../../assets/house2.jpeg');"></div>
-                <div class="slide-info">
-                    <span class="slide-number">02 / 03</span>
-                    <h3 id="comfortRent">LOADING RENT...</h3>
-                    <p>DISTANCE FROM OFFICE : 0.536KM</p>
-                    <p class="slide-price">1 SHARING FLAT</p>
-                </div>
-                <button class="slide-button" type="button" data-home="comfort">RENT</button>
+            <article class="home-slide">
+                <div class="slide-image" style="background-image:url('../../assets/house2.jpeg')"></div>
+                <div class="slide-info"><span>02 / 03</span><h3 id="comfortRent">LOADING...</h3><p>1 SHARING FLAT</p><p class="slide-price">TRANSPORT: 0.7× ORIGINAL</p></div>
+                <button class="slide-button" data-home="comfort">RENT</button>
             </article>
-
-            <article class="home-slide" data-home="premium">
-                <div class="slide-image" style="background-image:url('../../assets/house3.jpeg');"></div>
-                <div class="slide-info">
-                    <span class="slide-number">03 / 03</span>
-                    <h3 id="premiumRent">LOADING RENT...</h3>
-                    <p>DISTANCE FROM OFFICE : 4.3KM</p>
-                    <p class="slide-price">2 SHARING PG</p>
-                </div>
-                <button class="slide-button" type="button" data-home="premium">RENT</button>
+            <article class="home-slide">
+                <div class="slide-image" style="background-image:url('../../assets/house3.jpeg')"></div>
+                <div class="slide-info"><span>03 / 03</span><h3 id="premiumRent">LOADING...</h3><p>2 SHARING PG</p><p class="slide-price">TRANSPORT: 2.2× ORIGINAL</p></div>
+                <button class="slide-button" data-home="premium">RENT</button>
             </article>
         </div>
-
         <div class="slide-navigation">
-            <button class="slide-nav active" type="button" data-slide="0" aria-label="Slide one"></button>
-            <button class="slide-nav" type="button" data-slide="1" aria-label="Slide two"></button>
-            <button class="slide-nav" type="button" data-slide="2" aria-label="Slide three"></button>
+            <button class="slide-nav active" data-slide="0" aria-label="House one"></button>
+            <button class="slide-nav" data-slide="1" aria-label="House two"></button>
+            <button class="slide-nav" data-slide="2" aria-label="House three"></button>
         </div>
     </section>
 
-    <!-- ===================== WEEK LATER ===================== -->
-    <section id="weekLaterSequence" class="week-later-sequence" aria-hidden="true">
-        <div class="week-cutscene">
-            <div class="cutscene-tab">
-                <span>A WEEK LATER</span>
-            </div>
-        </div>
-
-        <div class="timeline-image timeline-image-one" aria-label="Week later image one"></div>
-        <div class="timeline-image timeline-image-two" aria-label="Week later image two"></div>
+    <section id="imageSceneOverlay" class="image-scene-overlay" aria-hidden="true">
+        <div id="imageSceneFrame" class="image-scene-frame"></div>
+        <div id="imageSceneCaption" class="image-scene-caption"></div>
     </section>
+
+    <section id="transportOverlay" class="image-message-overlay" aria-hidden="true">
+        <div class="image-card" style="background-image:url('../../assets/transport1.jpeg')"></div>
+        <div class="floating-message transport-message">
+            <span class="message-kicker">TRANSPORT</span>
+            <strong>YOU CHOSE PUBLIC TRANSPORT</strong>
+            <p id="transportDailyMessage">₹0 per working day</p>
+        </div>
+    </section>
+
+    <section id="decisionOverlay" class="decision-overlay" aria-hidden="true">
+        <div class="decision-panel">
+            <button class="decision-back hidden" id="decisionBack" type="button">← BACK</button>
+            <span class="decision-kicker" id="decisionKicker">YOUR CHOICE</span>
+            <h2 id="decisionTitle">MAKE A CHOICE</h2>
+            <p id="decisionDescription"></p>
+            <div id="decisionButtons" class="decision-buttons"></div>
+        </div>
+    </section>
+
+    <section id="expenditureOverlay" class="expenditure-overlay" aria-hidden="true">
+        <div class="expenditure-intro">
+            <h2>MY EXPENDITURE</h2>
+            <p>Check how your money has been used so far.</p>
+            <button id="openExpenditureButton" type="button">MY EXPENDITURE</button>
+        </div>
+        <div class="expenditure-sheet" id="expenditureSheet">
+            <button id="closeExpenditureButton" class="sheet-close" type="button">×</button>
+            <span class="sheet-kicker">FINANCIAL RECORD</span>
+            <h2>MONTH I</h2>
+            <div class="sheet-balance"><span>MONEY IN HAND</span><strong id="sheetBalance">₹0</strong></div>
+            <div id="transactionList" class="transaction-list"></div>
+            <div class="usage-chart" id="usageChart"></div>
+        </div>
+    </section>
+
+    <section id="monthEndOverlay" class="month-end-overlay" aria-hidden="true">
+        <div class="month-end-card"><span>MONTH I</span><strong>ENDS</strong></div>
+        <button id="dashboardButton" type="button">DASHBOARD</button>
+    </section>
+
+    <section id="pauseOverlay" class="pause-overlay" aria-hidden="true">
+        <div class="pause-card">
+            <span>SIMULATION PAUSED</span>
+            <button id="resumeButton" type="button">RESUME</button>
+            <button id="exitDashboardButton" type="button">EXIT TO DASHBOARD</button>
+        </div>
+    </section>
+
+    <button id="pauseButton" class="pause-button" type="button" aria-label="Pause simulation">Ⅱ</button>
 </main>
 
-<audio id="trainHorn" preload="auto">
-    <source src="../../assets/train_horn.mp3" type="audio/mpeg">
-</audio>
+<audio id="trainHorn" preload="auto"><source src="../../assets/train_horn.mp3" type="audio/mpeg"></audio>
 </body>
 </html>
