@@ -4,7 +4,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 
-from schemas import UserDataRequest
+from schemas import UserDataRequest, SimulationCheckpoint
 from auth import save_auth_data
 from database import get_connection
 
@@ -438,3 +438,79 @@ def receive_user_data(
             "status": status
         }
     }
+
+# ============================================================
+# SIMULATION CHECKPOINT
+# ============================================================
+
+@app.post("/api/simulation-checkpoint")
+def save_simulation_checkpoint(data: SimulationCheckpoint):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            """
+            INSERT INTO simulation_state
+            (id, username, month, current_scene, completed_month, balance, state, updated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s::jsonb, NOW())
+            ON CONFLICT (id, month)
+            DO UPDATE SET
+                username = EXCLUDED.username,
+                current_scene = EXCLUDED.current_scene,
+                completed_month = EXCLUDED.completed_month,
+                balance = EXCLUDED.balance,
+                state = EXCLUDED.state,
+                updated_at = NOW()
+            """,
+            (
+                data.id,
+                data.username.strip(),
+                data.month,
+                data.current_scene,
+                data.completed_month,
+                data.balance,
+                json.dumps(data.state)
+            )
+        )
+        conn.commit()
+        return {"saved": True, "month": data.month, "balance": data.balance}
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.get("/api/simulation-progress")
+def get_simulation_progress(user_id: str = Query(..., min_length=1, alias="id")):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            """
+            SELECT month, current_scene, completed_month, balance, state
+            FROM simulation_state
+            WHERE id = %s
+            ORDER BY month
+            """,
+            (user_id.strip(),)
+        )
+        rows = cursor.fetchall()
+        return {
+            "progress": [
+                {
+                    "month": row[0],
+                    "current_scene": row[1],
+                    "completed_month": row[2],
+                    "balance": float(row[3]),
+                    "state": row[4]
+                }
+                for row in rows
+            ]
+        }
+    finally:
+        cursor.close()
+        conn.close()

@@ -87,35 +87,28 @@ See the consequences of your choices.">
                 <div class="expense-panel-heading">
                     <div>
                         <span class="panel-eyebrow">MONEY MAP</span>
-                        <h2>INCOME &amp; EXPENSES</h2>
+                        <h2>CURRENT FINANCIAL STATE</h2>
                     </div>
-                    <span class="expense-panel-note">WHERE YOUR SALARY GOES</span>
+                    <span class="expense-panel-note">WHAT YOUR MONEY HAS DONE SO FAR</span>
                 </div>
                 <div class="expense-summary">
-                    <div id="incomeMetric" class="metric-block income-metric">INCOME: Loading...</div>
-                    <div id="expenseMetric" class="metric-block expense-metric">EXPENSES: Loading...</div>
+                    <div id="incomeMetric" class="metric-block income-metric">MONEY IN HAND: Loading...</div>
+                    <div id="expenseMetric" class="metric-block expense-metric">MONTH I: Loading...</div>
                 </div>
-                <div id="expenseChart" class="expense-chart" aria-label="Expenses as a percentage of salary"></div>
+                <h3 class="simulation-chart-title">CURRENT MONEY USAGE</h3>
+                <div id="expenseChart" class="expense-chart" aria-label="Current money usage"></div>
             </section>
 
             <section id="goals-panel" class="dashboard-block split-block">
                 <h2>GOALS &amp; SAVINGS</h2>
-                <div class="metric-block">GOALS</div>
-                <div class="metric-block">SAVINGS</div>
+                <div id="goalsDashboard" class="metric-block">GOALS</div>
+                <div id="debtDashboard" class="metric-block">DEBT</div>
+                <div id="emiDashboard" class="metric-block">EMI</div>
             </section>
 
             <section id="charts-panel" class="dashboard-block charts-block">
-                <h2>CHARTS</h2>
-                <div class="chart-grid">
-                    <div class="chart-tile expense-pie-tile">
-                        <div id="expensePieChart" class="expense-pie-chart" aria-label="Expense distribution pie chart"></div>
-                        <div id="expensePieLegend" class="expense-pie-legend"></div>
-                    </div>
-                    <div class="chart-tile"></div>
-                    <div class="chart-tile"></div>
-                    <div class="chart-tile"></div>
-                </div>
-            </section>
+                <h2>MONTHLY EXPENDITURE</h2>
+                <div id="monthlyExpenditureChart" class="monthly-expenditure-chart"></div>  </section>
 
             <section id="achievement-panel" class="dashboard-block achievement-block">
                 <h2>ACHIEVEMENT</h2>
