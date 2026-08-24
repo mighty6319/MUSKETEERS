@@ -146,38 +146,33 @@ if (logoutButton) {
 
 const startSimulationBtn =
     document.getElementById("startSimulationBtn");
+const monthOneStartPanel = document.getElementById("monthOneStartPanel");
+const playMonthOneButton = document.getElementById("playMonthOneButton");
+const closeMonthOneStartButton = document.getElementById("closeMonthOneStartButton");
 
 
 if (startSimulationBtn) {
 
     startSimulationBtn.addEventListener("click", () => {
 
-        startSimulationBtn.disabled = true;
-
-        // START THE ANIMATION
-        document.body.classList.add(
-            "simulation-starting"
-        );
-
-        // BLACK TAKES OVER
-        setTimeout(() => {
-
-            document.body.classList.add(
-                "simulation-black"
-            );
-
-        }, 1100);
-
-        // GO TO SIMULATION
-        setTimeout(() => {
-
-            window.location.href =
-                "../SIMULATION/simulation.html";
-
-        }, 2100);
+        monthOneStartPanel.hidden = false;
+        monthOneStartPanel.setAttribute("aria-hidden", "false");
+        monthOneStartPanel.classList.add("is-open");
 
     });
 }
+
+playMonthOneButton?.addEventListener("click", () => {
+    window.location.href = "../SIMULATION/simulation.html";
+});
+
+closeMonthOneStartButton?.addEventListener("click", () => {
+    monthOneStartPanel.classList.remove("is-open");
+    monthOneStartPanel.setAttribute("aria-hidden", "true");
+    window.setTimeout(() => {
+        monthOneStartPanel.hidden = true;
+    }, 220);
+});
 
 // ============================================================
 // LIVE MONTHLY SIMULATION DASHBOARD
@@ -185,7 +180,21 @@ if (startSimulationBtn) {
 // ============================================================
 (function loadSimulationFinancialState(){
     const activeId = localStorage.getItem(activeUserStorageKey);
-    if (!activeId) return;
+    const startButton = document.getElementById('startSimulationBtn');
+    const incomeMetric = document.getElementById('incomeMetric');
+    const expenseMetric = document.getElementById('expenseMetric');
+    const expenseChart = document.getElementById('expenseChart');
+    const monthlyChart = document.getElementById('monthlyExpenditureChart');
+    const pieChart = document.getElementById('monthOnePieChart');
+    const pieLegend = document.getElementById('monthOnePieLegend');
+    const money = value => new Intl.NumberFormat('en-IN', { style:'currency', currency:'INR', maximumFractionDigits:0 }).format(Math.round(Number(value)||0));
+
+    if (!activeId) {
+        if (startButton) startButton.textContent = 'START';
+        if (incomeMetric) incomeMetric.textContent = 'MONEY AVAILABLE: INR 50,000';
+        if (expenseMetric) expenseMetric.textContent = 'MONTH I NOT PLAYED';
+        return;
+    }
 
     let state = null;
     try {
@@ -193,22 +202,24 @@ if (startSimulationBtn) {
     } catch {
         state = null;
     }
-    if (!state) return;
+    if (!state) {
+        if (startButton) startButton.textContent = 'START';
+        if (incomeMetric) incomeMetric.textContent = 'MONEY AVAILABLE: INR 50,000';
+        if (expenseMetric) expenseMetric.textContent = 'MONTH I NOT PLAYED';
+        if (expenseChart) expenseChart.innerHTML = '<p>PLAY MONTH 1 TO SEE YOUR EXPENSES.</p>';
+        if (monthlyChart) monthlyChart.innerHTML = '<p>PLAY MONTH 1 TO SEE YOUR MONTH I GRAPH.</p>';
+        if (pieLegend) pieLegend.innerHTML = '<span>MONTH I DATA WILL APPEAR AFTER PLAYING.</span>';
+        return;
+    }
 
-    const money = value => new Intl.NumberFormat('en-IN', {
-        style:'currency', currency:'INR', maximumFractionDigits:0
-    }).format(Math.round(Number(value)||0));
+    if (startButton) startButton.textContent = 'START';
 
-    const incomeMetric = document.getElementById('incomeMetric');
-    const expenseMetric = document.getElementById('expenseMetric');
-    const expenseChart = document.getElementById('expenseChart');
-    const monthlyChart = document.getElementById('monthlyExpenditureChart');
     const goalsBox = document.getElementById('goalsDashboard');
     const debtBox = document.getElementById('debtDashboard');
     const emiBox = document.getElementById('emiDashboard');
 
-    const transactions = Array.isArray(state.transactions) ? state.transactions : [];
-    const expenses = transactions.filter(t => t.month === 1 && t.type === 'expense');
+    const transactions = Array.isArray(state.transactions) ? state.transactions.filter(t => t.month === 1) : [];
+    const expenses = transactions.filter(t => t.type === 'expense');
     const sums = {};
     expenses.forEach(t => sums[t.category] = (sums[t.category] || 0) + Number(t.amount || 0));
     const max = Math.max(1, ...Object.values(sums));
@@ -227,8 +238,8 @@ if (startSimulationBtn) {
     }
 
     if (monthlyChart) {
-        const categories = [...new Set(transactions.filter(t=>t.type==='expense').map(t=>t.category))];
-        const months = [1,2,3];
+        const categories = [...new Set(expenses.map(t=>t.category))];
+        const months = [1];
         const totals = {};
         categories.forEach(c => months.forEach(m => totals[`${c}-${m}`] = transactions.filter(t=>t.type==='expense' && t.category===c && t.month===m).reduce((a,t)=>a+Number(t.amount||0),0)));
         const overallMax = Math.max(1,...Object.values(totals));
@@ -239,6 +250,24 @@ if (startSimulationBtn) {
             </div>
         `).join('') || '<p>No monthly simulation expenditure recorded yet.</p>';
     }
+
+    const pieColors = ['#f6bd60','#84a59d','#f28482','#5e60ce','#90be6d','#577590'];
+    const totalExpenses = expenses.reduce((total, transaction) => total + Number(transaction.amount || 0), 0);
+    let offset = 0;
+    const segments = [];
+    if (pieLegend) pieLegend.replaceChildren();
+    Object.entries(sums).forEach(([category, value], index) => {
+        const percentage = totalExpenses ? value / totalExpenses * 100 : 0;
+        segments.push(`${pieColors[index % pieColors.length]} ${offset}% ${offset + percentage}%`);
+        offset += percentage;
+        if (pieLegend) {
+            const item = document.createElement('span');
+            item.textContent = `${category}: ${money(value)}`;
+            item.style.setProperty('--legend-color', pieColors[index % pieColors.length]);
+            pieLegend.appendChild(item);
+        }
+    });
+    if (pieChart) pieChart.style.background = segments.length ? `conic-gradient(${segments.join(',')})` : 'none';
 
     if (goalsBox) {
         const goals = Array.isArray(state.goals) ? state.goals : [];

@@ -152,6 +152,8 @@ header p {
 
     position: absolute;
 
+    z-index: 11;
+
     top: clamp(300px, 50vh, 470px);
     left: 49.5%;
 

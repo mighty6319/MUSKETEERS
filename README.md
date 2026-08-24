@@ -62,17 +62,17 @@ SH18/
 - JSON for survey data
 - Markdown for project and financial-rules documentation
 
-The repository does not yet include a dependency lockfile or requirements file. Install the backend packages with:
+Install the backend packages from the included requirements file:
 
 ```powershell
-py -m pip install fastapi uvicorn psycopg2-binary pydantic
+py -m pip install -r SH18\BACKEND\requirements.txt
 ```
 
 ## Run Locally
 
 ### 1. Configure PostgreSQL
 
-Create the `KNOW'E LEDGER` database and the tables expected by the backend: `auth_data`, `user_data`, and `user_expenses`.
+Create the `KNOW'E LEDGER` database and run [`SH18/BACKEND/schema.sql`](SH18/BACKEND/schema.sql) to create the tables expected by the backend: `auth_data`, `user_data`, `user_expenses`, and `simulation_state`.
 
 Update the connection settings in [`SH18/BACKEND/database.py`](SH18/BACKEND/database.py) to match your local PostgreSQL user and password. The current file uses `postgres` / `POSTGRES` by default.
 
