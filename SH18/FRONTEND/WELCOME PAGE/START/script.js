@@ -356,7 +356,7 @@ playButton.addEventListener("click", async (event) => {
         // ----------------------------------------------------
 
         window.location.href =
-            "../MAIN/main.html";
+            "../MAIN/main.HTML";
 
     } catch (error) {
 
@@ -1330,7 +1330,7 @@ profileForm.addEventListener(
             // ------------------------------------------------
 
             window.location.href =
-                "../MAIN/main.html";
+                "../MAIN/main.HTML";
 
 
         } catch (error) {

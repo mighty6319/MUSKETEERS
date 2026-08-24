@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="KNOW'E LEDGER | SIMULATION">
 <title>KNOW'E LEDGER | SIMULATION</title>
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 <script src="script.js" defer></script>
 </head>
@@ -67,19 +68,23 @@
         <div class="home-slides">
             <article class="home-slide active">
                 <div class="slide-image" style="background-image:url('../../assets/house1.jpeg')"></div>
-                <div class="slide-info"><span>01 / 03</span><h3 id="starterRent">LOADING...</h3><p>1 SHARING FLAT</p><p class="slide-price">TRANSPORT: ORIGINAL RATE</p></div>
+                <div class="slide-info"><span>01 / 03</span><h3 id="starterRent">LOADING...</h3><p>1 SHARING FLAT</p><p class="slide-price" id="starterTransport">TRANSPORT: LOADING...</p><p class="slide-distance">OFFICE DISTANCE: 1.7 KM</p></div>
                 <button class="slide-button" data-home="starter">RENT</button>
             </article>
             <article class="home-slide">
                 <div class="slide-image" style="background-image:url('../../assets/house2.jpeg')"></div>
-                <div class="slide-info"><span>02 / 03</span><h3 id="comfortRent">LOADING...</h3><p>1 SHARING FLAT</p><p class="slide-price">TRANSPORT: 0.7× ORIGINAL</p></div>
+                <div class="slide-info"><span>02 / 03</span><h3 id="comfortRent">LOADING...</h3><p>1 SHARING FLAT</p><p class="slide-price" id="comfortTransport">TRANSPORT: LOADING...</p><p class="slide-distance">OFFICE DISTANCE: 0.536 KM</p></div>
                 <button class="slide-button" data-home="comfort">RENT</button>
             </article>
             <article class="home-slide">
                 <div class="slide-image" style="background-image:url('../../assets/house3.jpeg')"></div>
-                <div class="slide-info"><span>03 / 03</span><h3 id="premiumRent">LOADING...</h3><p>2 SHARING PG</p><p class="slide-price">TRANSPORT: 2.2× ORIGINAL</p></div>
+                <div class="slide-info"><span>03 / 03</span><h3 id="premiumRent">LOADING...</h3><p>2 SHARING PG</p><p class="slide-price" id="premiumTransport">TRANSPORT: LOADING...</p><p class="slide-distance">OFFICE DISTANCE: 4.5 KM</p></div>
                 <button class="slide-button" data-home="premium">RENT</button>
             </article>
+        </div>
+        <div class="slide-arrows">
+            <button class="slide-arrow slide-prev" type="button" aria-label="Previous house">&#8592;</button>
+            <button class="slide-arrow slide-next" type="button" aria-label="Next house">&#8594;</button>
         </div>
         <div class="slide-navigation">
             <button class="slide-nav active" data-slide="0" aria-label="House one"></button>
@@ -94,7 +99,7 @@
     </section>
 
     <section id="transportOverlay" class="image-message-overlay" aria-hidden="true">
-        <div class="image-card" style="background-image:url('../../assets/transport1.jpeg')"></div>
+        <div class="image-card" style="background-image:url('../../assets/bg1.jpeg')"></div>
         <div class="floating-message transport-message">
             <span class="message-kicker">TRANSPORT</span>
             <strong>YOU CHOSE PUBLIC TRANSPORT</strong>
@@ -121,27 +126,34 @@
         <div class="expenditure-sheet" id="expenditureSheet">
             <button id="closeExpenditureButton" class="sheet-close" type="button">×</button>
             <span class="sheet-kicker">FINANCIAL RECORD</span>
-            <h2>MONTH I</h2>
+            <h2>MONTH I EXPENDITURE</h2>
             <div class="sheet-balance"><span>MONEY IN HAND</span><strong id="sheetBalance">₹0</strong></div>
             <div id="transactionList" class="transaction-list"></div>
             <div class="usage-chart" id="usageChart"></div>
         </div>
     </section>
 
+    <button id="expenditureQuickButton" class="expenditure-quick-button" type="button">MY EXPENDITURE</button>
+
     <section id="monthEndOverlay" class="month-end-overlay" aria-hidden="true">
         <div class="month-end-card"><span>MONTH I</span><strong>ENDS</strong></div>
         <button id="dashboardButton" type="button">DASHBOARD</button>
     </section>
 
+    <section id="completionPulse" class="completion-pulse" aria-hidden="true">
+        <strong>MONTH I COMPLETED</strong>
+    </section>
+
     <section id="pauseOverlay" class="pause-overlay" aria-hidden="true">
         <div class="pause-card">
             <span>SIMULATION PAUSED</span>
+            <button id="pauseExpenditureButton" type="button">MY EXPENDITURE</button>
             <button id="resumeButton" type="button">RESUME</button>
             <button id="exitDashboardButton" type="button">EXIT TO DASHBOARD</button>
         </div>
     </section>
 
-    <button id="pauseButton" class="pause-button" type="button" aria-label="Pause simulation">Ⅱ</button>
+    <button id="pauseButton" class="pause-button" type="button" aria-label="Pause simulation">II</button>
 </main>
 
 <audio id="trainHorn" preload="auto"><source src="../../assets/train_horn.mp3" type="audio/mpeg"></audio>
