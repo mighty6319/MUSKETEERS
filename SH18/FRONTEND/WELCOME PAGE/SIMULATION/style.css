@@ -34,3 +34,70 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000;font-f
 .expenditure-quick-button.hidden{display:none!important}.month-end-overlay{background:linear-gradient(135deg,#16002f 0%,#4b168c 48%,#140020 100%)}.month-end-card{padding:42px 58px;border:1px solid rgba(255,255,255,.32);border-radius:22px;background:rgba(24,3,58,.32);box-shadow:0 26px 90px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.22);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}.month-end-card span,.month-end-card strong{font-size:clamp(2.5rem,7vw,6rem)}.month-end-card small{display:block;margin-top:18px;font-size:.78rem;letter-spacing:.24em;opacity:.72}.month-end-overlay button.visible{border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.16);box-shadow:0 14px 40px rgba(0,0,0,.34);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .simulation:has(#monthEndOverlay.visible) .expenditure-quick-button{display:none!important}.decision-overlay.completion-progress .decision-panel{background:linear-gradient(160deg,rgba(48,12,95,.94),rgba(12,2,30,.96));box-shadow:18px 0 70px rgba(0,0,0,.35),inset -1px 0 rgba(255,255,255,.14)}
 .month-end-overlay{background:#000}.salary-screen{background:linear-gradient(145deg,#161616 0%,#030303 58%,#000 100%)}.completion-pulse{position:absolute;inset:0;z-index:190;display:grid;place-items:center;background:linear-gradient(135deg,#16002f 0%,#5b21b6 50%,#1a0430 100%);opacity:0;pointer-events:none;transition:opacity .35s ease}.completion-pulse.visible{opacity:1;pointer-events:auto}.completion-pulse strong{padding:28px 42px;border:1px solid rgba(255,255,255,.32);border-radius:18px;background:rgba(33,5,78,.35);box-shadow:0 24px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);font-size:clamp(1.8rem,5vw,4.5rem);letter-spacing:.06em;text-align:center}
+
+
+/* --- INTRO DIALOG OVERLAY --- */
+.intro-dialog-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 135; /* CHANGED FROM 110 TO 135 */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 6%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+.intro-dialog-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+.intro-dialog-box {
+    width: min(700px, 90vw);
+    background: rgba(10, 10, 10, 0.65);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 24px 30px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transform: translateY(20px);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.intro-dialog-overlay.visible .intro-dialog-box {
+    transform: none;
+}
+#introDialogText {
+    margin: 0;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    line-height: 1.5;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+.intro-dialog-controls {
+    display: flex;
+    justify-content: space-between;
+}
+.intro-dialog-controls button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s;
+}
+.intro-dialog-controls button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+.intro-dialog-controls button:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
