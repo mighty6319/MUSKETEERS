@@ -46,6 +46,12 @@ const pauseOverlay=document.getElementById('pauseOverlay');
 const resumeButton=document.getElementById('resumeButton');
 const exitDashboardButton=document.getElementById('exitDashboardButton');
 
+// Intro Dialog Elements
+const introDialogOverlay = document.getElementById('introDialogOverlay');
+const introDialogText = document.getElementById('introDialogText');
+const introDialogBack = document.getElementById('introDialogBack');
+const introDialogNext = document.getElementById('introDialogNext');
+
 const API_BASE='http://127.0.0.1:8000';
 const ACTIVE_USER_KEY='activeUserId';
 const USERS_KEY='users';
@@ -59,7 +65,7 @@ const EMI_NOW=6000;
 const WORKING_DAYS_PER_MONTH=20;
 const CHECKPOINT_DAYS=8; // 1 week + 3rd day = 7 + 1 = 8 days
 
-const TIMES={loading:5000,scene2:7000,hornFromEnd:1000,scene3:3000,scene4:2500,nextDay:2000,scene5:2000,videoPlay:5000,curtain:3000,monthDelay:1000,monthVisible:2000,weekTab:2000,img1:4500,img2:1500,img2NotificationDelay:500,transport:3500,office:7000,party:7000,life:5000,check:3000,mall1:3000,mall2:3000,mall3:3000,mallroam:3000,mall4:5000,phone:3000,mall5:7000,mall6:3000,monthEnd:5000};
+const TIMES={loading:5000,scene2:7000,hornFromEnd:1000,scene3:3000,scene4:2500,nextDay:2000,scene5:2000,videoPlay:5000,curtain:3000,monthDelay:1000,monthVisible:2000,weekTab:2000,transport:3500,party:7000,life:5000,monthEnd:5000};
 
 let userData=null;
 let profileLoaded=false;
@@ -119,32 +125,229 @@ document.querySelectorAll('.slide-button').forEach(b=>b.addEventListener('click'
 async function selectHome(homeType){const rent=Number(window.homeRentData?.[homeType]||0);if(!rent)return;if(rent>state.balance){await showNotification({title:'NOT ENOUGH MONEY',message:`You need ${money(rent)} but have ${money(state.balance)} in hand.`});return}state.selectedHome=homeType;state.houseRent=rent;calculateTransport();scenes.six?.pause();simulation.classList.add('scene-six-cleared','house-transition');closeHome();await financialAction({category:'HOUSING',amount:rent,description:'House rent',notificationTitle:'HOUSE RENT PAID',notificationMessage:()=>`${money(rent)} deducted. Money in hand: ${money(state.balance)}`});await showHouseMaterials()}
 
 async function showVideoScene(src,duration){const v=document.createElement('video');v.className='scene-temp-video';v.src=src;v.muted=true;v.playsInline=true;v.autoplay=true;v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:126;background:#000';simulation.appendChild(v);await new Promise(r=>{v.oncanplay=()=>r();v.onerror=()=>r()});v.play().catch(()=>{});await wait(duration);v.pause();v.remove()}
-async function showImageScene(src,duration,caption='',vibrate=false,keepVisible=false){imageSceneFrame.style.backgroundImage=`url("${src}")`;imageSceneCaption.textContent=caption;imageSceneOverlay.classList.toggle('vibrate',vibrate);imageSceneOverlay.classList.add('visible');imageSceneOverlay.setAttribute('aria-hidden','false');await wait(duration);if(!keepVisible)await hideImageScene()}
+
 async function hideImageScene(){imageSceneOverlay.classList.remove('visible','vibrate');imageSceneOverlay.setAttribute('aria-hidden','true');await wait(250)}
 async function showHouseMaterials(){await showCutscene('YOU BOUGHT SOME HOUSE MATERIALS',1700);await financialAction({category:'MATERIALS',amount:HOUSE_MATERIAL_COST,description:'House materials',notificationTitle:'HOUSE MATERIALS',notificationMessage:`${money(HOUSE_MATERIAL_COST)} deducted.`});await showTransportChoice()}
 async function showTransportChoice(){calculateTransport();transportDailyMessage.textContent=`${money(state.transport.daily)} per working day`;transportOverlay.classList.add('visible');transportOverlay.setAttribute('aria-hidden','false');simulation.classList.remove('house-transition');await wait(TIMES.transport);transportOverlay.classList.remove('visible');transportOverlay.setAttribute('aria-hidden','true');state.currentScene='transport-selected';saveLocal();await checkpointSave();await weekLaterSequence();}
-async function weekLaterSequence(){await showCutscene('A WEEK LATER',TIMES.weekTab);await showImageScene('../../assets/IMG1.jpeg',TIMES.img1,'');imageSceneOverlay.classList.add('visible','black-transition');imageSceneOverlay.setAttribute('aria-hidden','false');await wait(500);imageSceneFrame.style.backgroundImage="url('../../assets/IMG2.jpeg')";imageSceneOverlay.classList.remove('black-transition');imageSceneOverlay.classList.add('vibrate');await wait(TIMES.img2NotificationDelay);if(!state.welcomeBonusReceived){state.welcomeBonusReceived=true;addTransaction('BONUS',WELCOME_BONUS,'Welcome bonus','income');updateBalance();await checkpointSave()}await showNotification({app:'KNOW’E LEDGER • OFFICE',title:'WELCOME BONUS',message:`${money(WELCOME_BONUS)} credited to your available money.`});await showNotification({app:'YOUR BANK',title:'₹25,000 CREDITED',message:`Your account balance is now ${money(state.balance)}.`});await hideImageScene();await showArrival()}
-async function showArrival(){await showCutscene('YOU ARRIVED TO YOUR OFFICE',1800);await showImageScene('../../assets/office1.jpeg',TIMES.office,'',false,true);await openOfficeDecision()}
+
+
+// --- UNIVERSAL DIALOG SLIDESHOW ENGINE ---
+// This handles the Next/Back logic for ALL scenes, pinning the NEXT button to the right!
+function runDialogSlideshow(slides) {
+    return new Promise((resolve) => {
+        if (!introDialogOverlay || !introDialogNext || !introDialogBack) {
+            resolve();
+            return;
+        }
+
+        // Ensure the back button stays in the DOM flow to keep NEXT on the right side
+        introDialogBack.style.display = 'inline-block';
+
+        let currentStep = 0;
+        let isTransitioning = false; 
+        
+        const updateDialog = async () => {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            introDialogNext.disabled = true;
+            introDialogBack.disabled = true;
+            
+            // Fade out the box
+            introDialogOverlay.classList.remove('visible'); 
+            await wait(350); 
+            
+            const step = slides[currentStep];
+            
+            // Run any specific background changes or logic for this slide
+            if (step.onEnter) {
+                await step.onEnter();
+            }
+            
+            introDialogText.textContent = step.text;
+            
+            // MAGIC TRICK: We use visibility hidden instead of display none!
+            // This hides the button but preserves its space, keeping NEXT on the far right.
+            if (currentStep === 0) {
+                introDialogBack.style.visibility = 'hidden';
+            } else {
+                introDialogBack.style.visibility = 'visible';
+                introDialogBack.disabled = false;
+            }
+            
+            await wait(250); 
+            introDialogOverlay.classList.add('visible'); 
+            
+            introDialogNext.disabled = false;
+            isTransitioning = false;
+        };
+        
+        introDialogNext.onclick = async () => {
+            if (isTransitioning) return;
+            if (currentStep < slides.length - 1) {
+                currentStep++;
+                updateDialog();
+            } else {
+                introDialogOverlay.classList.remove('visible');
+                introDialogOverlay.setAttribute('aria-hidden', 'true');
+                await wait(300); // Give box time to vanish
+                resolve(); 
+            }
+        };
+        
+        introDialogBack.onclick = () => {
+            if (isTransitioning) return;
+            if (currentStep > 0) {
+                currentStep--;
+                updateDialog();
+            }
+        };
+        
+        // Start the first slide
+        updateDialog();
+    });
+}
+
+// --- SEQUENCES REBUILT TO USE SLIDESHOW (Back Button Now Works Here!) ---
+async function weekLaterSequence(){
+    await showCutscene('A WEEK LATER',TIMES.weekTab);
+    
+    // Start with a black screen before fading into the image
+    imageSceneOverlay.classList.add('visible','black-transition');
+    imageSceneOverlay.setAttribute('aria-hidden','false');
+    
+    const slides = [
+        {
+            text: "It's been a week since I moved in. The new routine is starting to feel familiar.",
+            onEnter: () => {
+                imageSceneFrame.style.backgroundImage="url('../../assets/IMG1.jpeg')";
+                // FIX: REMOVE the black-transition so the image becomes visible!
+                imageSceneOverlay.classList.remove('black-transition');
+                imageSceneOverlay.classList.remove('vibrate');
+            }
+        },
+        {
+            text: "Wow, a welcome bonus from work! This is definitely going to help.",
+            onEnter: async () => {
+                imageSceneFrame.style.backgroundImage="url('../../assets/IMG2.jpeg')";
+                imageSceneOverlay.classList.remove('black-transition');
+                imageSceneOverlay.classList.add('vibrate');
+                
+                if(!state.welcomeBonusReceived){
+                    state.welcomeBonusReceived=true;
+                    addTransaction('BONUS',WELCOME_BONUS,'Welcome bonus','income');
+                    updateBalance();
+                    await checkpointSave();
+                }
+                
+                // Show notifications alongside the text
+                showNotification({app:'KNOW’E LEDGER • OFFICE',title:'WELCOME BONUS',message:`${money(WELCOME_BONUS)} credited to your available money.`});
+                showNotification({app:'YOUR BANK',title:'₹25,000 CREDITED',message:`Your account balance is now ${money(state.balance)}.`});
+            }
+        }
+    ];
+    
+    await runDialogSlideshow(slides);
+    
+    await hideImageScene();
+    await showArrival();
+}
+    
+
+async function showArrival(){
+    await showCutscene('YOU ARRIVED TO YOUR OFFICE',1800);
+    
+    imageSceneFrame.style.backgroundImage="url('../../assets/office1.jpeg')";
+    imageSceneOverlay.classList.add('visible');
+    imageSceneOverlay.setAttribute('aria-hidden','false');
+    
+    await runDialogSlideshow([{ text: "Another busy day at the office. Things are moving fast here. Everybody want to have a party should i go?" }]);
+    
+    await openOfficeDecision();
+}
 
 function openDecision({kicker,title,description,options,back=true}){decisionKicker.textContent=kicker;decisionTitle.textContent=title;decisionDescription.textContent=description||'';decisionButtons.innerHTML='';decisionBack.classList.toggle('hidden',!back);options.forEach(o=>{const b=document.createElement('button');b.textContent=o.label;b.dataset.action=o.value;if(o.disabled)b.classList.add('disabled');b.disabled=!!o.disabled;b.addEventListener('click',()=>o.onClick());decisionButtons.appendChild(b)});decisionOverlay.classList.add('visible');decisionOverlay.setAttribute('aria-hidden','false')}
 function closeDecision(){decisionOverlay.classList.remove('visible');decisionOverlay.setAttribute('aria-hidden','true')}
-async function openOfficeDecision(){openDecision({kicker:'OFFICE INVITATION',title:'JOIN THE PARTY?',description:'A new invitation has arrived. Choose what you want to do.',options:[{label:'YES',value:'yes',onClick:()=>officeChoice('yes')},{label:'NO',value:'no',onClick:()=>officeChoice('no')},{label:'POSTPONE',value:'postpone',onClick:()=>officeChoice('postpone')}],back:false})}
-async function officeChoice(choice){state.decisions.office=choice;saveLocal();currentDecisionBack=openOfficeDecision;openDecision({kicker:'OFFICE DECISION',title:choice==='yes'?'YES — PARTY':choice==='no'?'NO — SKIP':'POSTPONE',description:'Your other choices are hidden. Use BACK if you want to reconsider.',options:[{label:'CONTINUE',value:'continue',onClick:()=>confirmOfficeChoice(choice)}],back:true})}
-async function confirmOfficeChoice(choice){closeDecision();currentDecisionBack=null;await hideImageScene();await checkpointSave();if(choice==='yes'){await showVideoScene('../../assets/party1.mp4',TIMES.party);await financialAction({category:'PARTY',amount:PARTY_COST,description:'Office party',notificationTitle:'PARTY EXPENSE',notificationMessage:`${money(PARTY_COST)} deducted.`})}else if(choice==='no'){await showVideoScene('../../assets/life1.mp4',TIMES.life)}await nightScene()}
 
-async function nightScene(){await showCutscene('THAT NIGHT',1600);await showNotification({app:'MESSAGES',title:'FRIEND',message:'I have arrived.',duration:1700});await showNotification({app:'MESSAGES',title:'FRIEND',message:"Let’s meet up.",duration:1900});await showImageScene('../../assets/check1.jpeg',TIMES.check,'');await openExpenditurePrompt()}
+async function openOfficeDecision(){openDecision({kicker:'OFFICE INVITATION',title:'JOIN THE PARTY?',description:'A new invitation has arrived. Choose what you want to do.',options:[{label:'YES',value:'yes',onClick:()=>officeChoice('yes')},{label:'NO',value:'no',onClick:()=>officeChoice('no')},{label:'POSTPONE',value:'postpone',onClick:()=>officeChoice('postpone')}],back:false})}
+
+async function officeChoice(choice){state.decisions.office=choice;saveLocal();currentDecisionBack=openOfficeDecision;openDecision({kicker:'OFFICE DECISION',title:choice==='yes'?'YES — PARTY':choice==='no'?'NO — SKIP':'POSTPONE',description:'Your other choices are hidden. Use BACK if you want to reconsider.',options:[{label:'CONTINUE',value:'continue',onClick:()=>confirmOfficeChoice(choice)}],back:true})}
+
+async function confirmOfficeChoice(choice){
+    closeDecision();
+    currentDecisionBack=null;
+    await hideImageScene();
+    await checkpointSave();
+    if(choice==='yes'){
+        await showVideoScene('../../assets/party1.mp4',TIMES.party);
+        await financialAction({category:'PARTY',amount:PARTY_COST,description:'Office party',notificationTitle:'PARTY EXPENSE',notificationMessage:`${money(PARTY_COST)} deducted.`});
+    }else if(choice==='no'){
+        await showVideoScene('../../assets/life1.mp4',TIMES.life);
+    }
+    await nightScene();
+}
+
+async function nightScene(){
+    await showCutscene('THAT NIGHT',1600);
+    showNotification({app:'MESSAGES',title:'FRIEND',message:'I have arrived.',duration:1700});
+    showNotification({app:'MESSAGES',title:'FRIEND',message:"Let’s meet up.",duration:1900});
+    
+    imageSceneFrame.style.backgroundImage="url('../../assets/check1.jpeg')";
+    imageSceneOverlay.classList.add('visible');
+    imageSceneOverlay.setAttribute('aria-hidden','false');
+    
+    await runDialogSlideshow([{ text: "Finally off work. Time to catch up with my expenses, ohh..." }]);
+    
+    await openExpenditurePrompt();
+}
+
 async function openExpenditurePrompt(){state.expenditureIntroduced=true;expenditureQuickButton?.classList.remove('hidden');pauseExpenditureButton?.classList.remove('hidden');if(state.transport.daysCharged<CHECKPOINT_DAYS&&state.transport.daily>0){const amount=Math.round(state.transport.daily*CHECKPOINT_DAYS);state.transport.daysCharged=CHECKPOINT_DAYS;state.transport.total=amount;await financialAction({category:'TRANSPORT',amount,description:`Public transport for ${CHECKPOINT_DAYS} days`,notificationTitle:'TRANSPORTATION',notificationMessage:`${money(amount)} deducted for ${CHECKPOINT_DAYS} days of public transport.`})}expenditureOverlay.classList.add('visible');expenditureOverlay.setAttribute('aria-hidden','false');renderExpenditure();}
+
 function renderExpenditure(){const sessionTransactions=state.transactions.filter(t=>t.month===1&&t.sessionId===state.sessionId);sheetBalance.textContent=money(state.balance);transactionList.innerHTML=sessionTransactions.map(t=>`<div class="transaction-row"><span>${t.category}<small> ${t.description}</small></span><strong>${t.type==='expense'?'−':'+'}${money(t.amount)}</strong></div>`).join('')||'<div class="transaction-row"><span>No transactions yet</span><strong>—</strong></div>';const sums={};sessionTransactions.filter(t=>t.type==='expense').forEach(t=>sums[t.category]=(sums[t.category]||0)+t.amount);const max=Math.max(1,...Object.values(sums));usageChart.innerHTML=Object.entries(sums).map(([k,v])=>`<div class="usage-row"><span>${k}</span><div class="usage-bar"><span style="width:${Math.max(4,v/max*100)}%"></span></div><b>${money(v)}</b></div>`).join('')}
+
 function openExpenditureFromPause(){if(!state.expenditureIntroduced)return;setPaused(true);pauseOverlay.classList.remove('visible');pauseOverlay.setAttribute('aria-hidden','true');expenditureOverlay.classList.add('visible','sheet-open');expenditureOverlay.setAttribute('aria-hidden','false');renderExpenditure();expenditureSheet.classList.add('open')}
 expenditureQuickButton?.addEventListener('click',openExpenditureFromPause);pauseExpenditureButton?.addEventListener('click',openExpenditureFromPause);
 openExpenditureButton?.addEventListener('click',()=>{renderExpenditure();expenditureSheet.classList.add('open');expenditureOverlay.classList.add('sheet-open')});closeExpenditureButton?.addEventListener('click',()=>{expenditureSheet.classList.remove('open');expenditureOverlay.classList.remove('sheet-open');if(paused){expenditureOverlay.classList.remove('visible');expenditureOverlay.setAttribute('aria-hidden','true');pauseOverlay.classList.add('visible');pauseOverlay.setAttribute('aria-hidden','false')}});
 
-async function continueFromExpenditure(){expenditureOverlay.classList.remove('visible');expenditureSheet.classList.remove('open');expenditureOverlay.classList.remove('sheet-open');expenditureOverlay.setAttribute('aria-hidden','true');state.currentScene='next-day-after-expenditure';await checkpointSave();await showCutscene('NEXT DAY',TIMES.nextDay);state.currentScene='mall';await checkpointSave();await mallSequence()}
+async function continueFromExpenditure(){
+    expenditureOverlay.classList.remove('visible');
+    expenditureSheet.classList.remove('open');
+    expenditureOverlay.classList.remove('sheet-open');
+    expenditureOverlay.setAttribute('aria-hidden','true');
+    state.currentScene='next-day-after-expenditure';
+    await checkpointSave();
+    
+    await showCutscene('NEXT DAY',TIMES.nextDay);
+    
+    state.currentScene='mall';
+    await checkpointSave();
+    await mallSequence();
+}
 openExpenditureButton?.addEventListener('dblclick',continueFromExpenditure);
-// The first click opens the sheet; a second click on the same button continues is replaced by this explicit helper below.
 const continueBtn=document.createElement('button');continueBtn.id='continueExpenditureButton';continueBtn.type='button';continueBtn.textContent='CONTINUE TO NEXT DAY';continueBtn.style.cssText='display:block;margin:22px auto 0;padding:12px 22px;border:0;border-radius:8px;background:#111;color:#fff;font-weight:800;cursor:pointer';expenditureSheet?.appendChild(continueBtn);continueBtn.addEventListener('click',continueFromExpenditure);
 
-async function mallSequence(){const imgs=[['img-mall1.jpeg',TIMES.mall1],['img-mall2.jpeg',TIMES.mall2],['img-mall3.jpeg',TIMES.mall3],['img-mallroam.jpeg',TIMES.mallroam],['img-mall4.jpeg',TIMES.mall4],['img-phone1.jpeg',TIMES.phone],['img-mall6.jpeg',TIMES.mall5]];for(let index=0;index<imgs.length;index+=1){const [file,time]=imgs[index];await showImageScene(`../../assets/${file}`,time,'',false,index===imgs.length-1)}await phoneDecision()}
+async function mallSequence(){
+    imageSceneOverlay.classList.add('visible');
+    imageSceneOverlay.setAttribute('aria-hidden','false');
+    
+    const slides = [
+        { text: "The weekend is finally here. I decided to hit the mall with my friend.", img: "img-mall1.jpeg" },
+        { text: "Finally....", img: "img-mall2.jpeg" },
+        { text: "Checking out some new styles... reliving old memories.", img: "img-mall3.jpeg" },
+        { text: "Just roaming around, soaking in the vibrant city energy.", img: "img-mallroam.jpeg" },
+        { text: "Wandered into the electronics section. I've been needing an upgrade.", img: "img-mall4.jpeg" },
+        { text: "I should really consider a new phone.", img: "img-phone1.jpeg" },
+        { text: "But it's a ₹30,000 investment... Evaluate whether you truly need an upgrade.", img: "img-mall6.jpeg" }
+    ].map(s => ({
+        text: s.text,
+        onEnter: () => { imageSceneFrame.style.backgroundImage = `url("../../assets/${s.img}")`; }
+    }));
+    
+    await runDialogSlideshow(slides);
+    
+    await phoneDecision();
+}
+
 async function phoneDecision(){openDecision({kicker:'PURCHASE DECISION',title:'WHAT WILL YOU DO?',description:'The phone costs ₹30,000. Your choice changes your future financial state.',options:[{label:'BUY NOW',value:'buy-now',onClick:()=>phoneBuyNow()},{label:'DELAY PURCHASE',value:'delay',onClick:()=>phoneChoice('delay')},{label:'SAVE FOR IT',value:'save',onClick:()=>phoneChoice('save')},{label:'NOT BUY',value:'not-buy',onClick:()=>phoneChoice('not-buy')}],back:false})}
 function decisionSub(options,title,description){openDecision({kicker:'PHONE',title,description,options,back:true})}
 decisionBack?.addEventListener('click',()=>{if(currentDecisionBack)currentDecisionBack();else phoneDecision()});
@@ -166,13 +369,75 @@ pauseButton?.addEventListener('click',()=>setPaused(true));resumeButton?.addEven
 async function startSceneSix(){showScene(scenes.six);state.currentScene='scene6';saveLocal();scenes.six.currentTime=0;scenes.six.loop=false;simulation.classList.add('curtain-active');scenes.six.play().catch(()=>{});await wait(TIMES.curtain);simulation.classList.remove('curtain-active');await wait(TIMES.monthDelay);monthTitle.classList.add('visible');await wait(TIMES.videoPlay-TIMES.curtain);await wait(TIMES.monthVisible);monthTitle.classList.remove('visible');await checkpointSave();houseSearchOverlay.classList.add('visible');houseSearchOverlay.setAttribute('aria-hidden','false');scenes.six.pause()}
 
 async function showCompletedMonth(){loadingScreen.classList.add('hidden');expenditureQuickButton?.classList.add('hidden');completionPulse.classList.add('visible');completionPulse.setAttribute('aria-hidden','false');await wait(1800);completionPulse.classList.remove('visible');completionPulse.setAttribute('aria-hidden','true');decisionOverlay.classList.add('completion-progress');openDecision({kicker:'PROGRESS',title:'MONTH I COMPLETED',description:'Month I is complete. Replay resets Month I only.',options:[{label:'REPLAY',value:'replay',onClick:()=>{localStorage.removeItem(userKey());sessionStorage.removeItem(SESSION_KEY);location.reload()}},{label:'DASHBOARD',value:'dashboard',onClick:()=>{window.location.href='../MAIN/main.HTML'}}],back:false})}
-async function runSequence(){if(simulationStarted)return;simulationStarted=true;const saved=JSON.parse(localStorage.getItem(userKey())||'null');if(saved?.completedMonth>=1){state={...state,...saved,sessionId:simulationSessionId()};await showCompletedMonth();return}localStorage.removeItem(userKey());state={...state,month:1,currentScene:'loading',completedMonth:0,balance:STARTING_MONEY,startingMoney:STARTING_MONEY,selectedHome:null,houseRent:0,transport:{monthlyBase:0,dailyBase:0,daily:0,daysCharged:0,total:0},transactions:[],goals:[],debt:0,emiPending:0,decisions:{},welcomeBonusReceived:false,expenditureIntroduced:false,sessionId:simulationSessionId()};expenditureQuickButton?.classList.add('hidden');pauseExpenditureButton?.classList.add('hidden');updateBalance();await loadProfile();const assets=['../../assets/scene2.jpeg','../../assets/scene3.jpeg','../../assets/scene4.jpeg','../../assets/scene5.jpeg','../../assets/scene6.mp4','../../assets/house1.jpeg','../../assets/house2.jpeg','../../assets/house3.jpeg','../../assets/IMG1.jpeg','../../assets/IMG2.jpeg'];await Promise.all([wait(TIMES.loading),...assets.map(src=>new Promise(r=>{if(src.endsWith('.mp4')){const v=document.createElement('video');v.preload='auto';v.src=src;v.oncanplaythrough=()=>r();v.onerror=()=>r()}else{const i=new Image();i.onload=()=>r();i.onerror=()=>r();i.src=src}}))]);loadingScreen.classList.add('hidden');
-showScene(scenes.two);state.currentScene='scene2';window.setTimeout(()=>playHorn(1),TIMES.scene2-TIMES.hornFromEnd);await wait(TIMES.scene2);
-showScene(scenes.three);state.currentScene='scene3';await wait(TIMES.scene3);
-showScene(scenes.four);state.currentScene='scene4';playHorn(.18);fadeHorn(TIMES.scene4);await wait(TIMES.scene4);
-await showCutscene('NEXT DAY',TIMES.nextDay);
-showScene(scenes.five);state.currentScene='scene5';await wait(TIMES.scene5);
-await startSceneSix();
+
+// --- INTRO SEQUENCE USING REBUILT SLIDESHOW ---
+async function runIntroSequence() {
+    const steps = [
+        { 
+            text: "The journey begins. Leaving the old behind for a new city.",
+            onEnter: () => { showScene(scenes.two); state.currentScene = 'scene2'; saveLocal(); playHorn(1); } 
+        },
+        { 
+            text: "The train ride felt endless, carrying dreams and uncertainties.",
+            onEnter: () => { showScene(scenes.three); state.currentScene = 'scene3'; saveLocal(); } 
+        },
+        { 
+            text: "Finally arriving. The air feels completely different here.",
+            onEnter: () => { showScene(scenes.four); state.currentScene = 'scene4'; saveLocal(); playHorn(0.18); fadeHorn(TIMES.scene4); } 
+        },
+        { 
+            text: "Morning arrives. First day, fresh start. Time to find a place to stay.",
+            onEnter: async () => { await showCutscene('NEXT DAY', TIMES.nextDay); showScene(scenes.five); state.currentScene = 'scene5'; saveLocal(); } 
+        }
+    ];
+    
+    await runDialogSlideshow(steps);
+}
+
+async function runSequence(){
+    if(simulationStarted)return;
+    simulationStarted=true;
+    const saved=JSON.parse(localStorage.getItem(userKey())||'null');
+    
+    if(saved?.completedMonth>=1){
+        state={...state,...saved,sessionId:simulationSessionId()};
+        await showCompletedMonth();
+        return;
+    }
+    
+    localStorage.removeItem(userKey());
+    state={...state,month:1,currentScene:'loading',completedMonth:0,balance:STARTING_MONEY,startingMoney:STARTING_MONEY,selectedHome:null,houseRent:0,transport:{monthlyBase:0,dailyBase:0,daily:0,daysCharged:0,total:0},transactions:[],goals:[],debt:0,emiPending:0,decisions:{},welcomeBonusReceived:false,expenditureIntroduced:false,sessionId:simulationSessionId()};
+    expenditureQuickButton?.classList.add('hidden');
+    pauseExpenditureButton?.classList.add('hidden');
+    updateBalance();
+    
+    await loadProfile();
+    
+    const assets=['../../assets/scene2.jpeg','../../assets/scene3.jpeg','../../assets/scene4.jpeg','../../assets/scene5.jpeg','../../assets/scene6.mp4','../../assets/house1.jpeg','../../assets/house2.jpeg','../../assets/house3.jpeg','../../assets/IMG1.jpeg','../../assets/IMG2.jpeg'];
+    
+    await Promise.all([
+        wait(TIMES.loading),
+        ...assets.map(src=>new Promise(r=>{
+            if(src.endsWith('.mp4')){
+                const v=document.createElement('video');
+                v.preload='auto';
+                v.src=src;
+                v.oncanplaythrough=()=>r();
+                v.onerror=()=>r()
+            }else{
+                const i=new Image();
+                i.onload=()=>r();
+                i.onerror=()=>r();
+                i.src=src
+            }
+        }))
+    ]);
+    
+    loadingScreen.classList.add('hidden');
+    
+    await runIntroSequence();
+    
+    await startSceneSix();
 }
 
 runSequence();
